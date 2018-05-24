@@ -4,9 +4,11 @@
 #include <GLUT/glut.h>
 #include <GLKit/GLKMatrix4.h>
 #include <math.h>
-#include "graphic function/camera_movement.h"
-#include "SDL/window.h"
-#include "render/cube_render.h"
+#include "graphic function/camera_movement.cpp"
+#include "SDL/window.cpp"
+#include "render/cube_render.cpp"
+#include "rubixcube/rubix_cube.cpp"
+#include "rubixcube/cube.cpp"
 
 int main()
 {
