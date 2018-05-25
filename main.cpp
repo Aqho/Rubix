@@ -7,8 +7,7 @@
 #include "graphic function/camera_movement.cpp"
 #include "SDL/window.cpp"
 #include "render/cube_render.cpp"
-#include "rubixcube/rubix_cube.cpp"
-#include "rubixcube/cube.cpp"
+#include "rubixcube/headers/rubix_cube.hpp"
 
 int main()
 {
