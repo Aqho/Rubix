@@ -1,21 +1,34 @@
 #include "headers/cube.hpp"
 #include "headers/face.hpp"
 
-void cube::receive_coordonate(float x, float y, float z,char color1, char color2, char color3)
+#include <iostream>
+
+void cube::receive_coordonate(float x, float y, float z, float Ox, float Oy, float Oz)
 {
-//    face faceT, faceb, faceL, faceF, faceR, faceB;
-//    faceT.receive_coordonates(0.0, 0.0, 0.0, 'T', 'W');
-//    faceb.receive_coordonates(0.0, 0.0, 0.0, 'b', 'W');
-//    faceL.receive_coordonates(0.0, 0.0, 0.0, 'L','W');
-//    faceF.receive_coordonates(0.0, 0.0, 0.0, 'F', 'W');
-//    faceR.receive_coordonates(0.0, 0.0, 0.0, 'R', 'W');
-//    faceB.receive_coordonates(0.0, 0.0, 0.0, 'B', 'W');
+    for (int face = 0; face < 6; face++)
+    {
+        for (int vertex = 0; vertex < 4; vertex++)
+        {
+            for (int coord = 0; coord < 3; coord++)
+            {
+                if (coord == 0){vertexcube[face][vertex][coord] = vertexcube[face][vertex][coord]+x;}
+                if (coord == 1){vertexcube[face][vertex][coord] = vertexcube[face][vertex][coord]+y;}
+                if (coord == 2){vertexcube[face][vertex][coord] = vertexcube[face][vertex][coord]+z;}
+            }
+        }
+    }
+    
+
 }
 
-/*
- glColor3f(1.0f, 1.0f, 1.0f);
- glVertex3f( 1.0f, 1.0f, -1.0f);
- glVertex3f(-1.0f, 1.0f, -1.0f);
- glVertex3f(-1.0f, 1.0f,  1.0f);
- glVertex3f( 1.0f, 1.0f,  1.0f);
-*/
+
+ /*
+ float vertexcube[6][4][9] = {{{0.5f,0.5f,-0.5f   ,0,0,0,   0.0,1.0,0.0}, {-0.5,0.5,-0.5   ,0,0,0,   0.0,1.0,0.0}, {-0.5,0.5,0.5   ,0,0,0,   0.0,1.0,0.0}, {0.5,0.5,0.5   ,0,0,0,   0.0,1.0,0.0}},{{0.5,-0.5,0.5   ,0,0,0,   0.0,0.0,1.0},{-0.5,-0.5,0.5   ,0,0,0,   0.0,0.0,1.0},{-0.5,-0.5,-0.5   ,0,0,0,   0.0,0.0,1.0},{0.5,-0.5,-0.5   ,0,0,0,   0.0,0.0,1.0}},{{0.5,0.5,0.5   ,0,0,0,   1.0,1.0,1.0},{-0.5,0.5,0.5   ,0,0,0,   1.0,1.0,1.0},{-0.5,-0.5,0.5   ,0,0,0,   1.0,1.0,1.0},{0.5,-0.5,0.5   ,0,0,0,   1.0,1.0,1.0}},{{0.5,-0.5,-0.5   ,0,0,0,   1.0,1.0,0.0},{-0.5,-0.5,-0.5   ,0,0,0,   1.0,1.0,0.0},{-0.5,0.5,-0.5   ,0,0,0,   1.0,1.0,0.0},{0.5,0.5,-0.5   ,0,0,0,   1.0,1.0,0.0}},{{-0.5,0.5,0.5   ,0,0,0,   1.0,0.0,0.0},{-0.5,0.5,-0.5   ,0,0,0,   1.0,0.0,0.0},{-0.5,-0.5,-0.5   ,0,0,0,   1.0,0.0,0.0},{-0.5,-0.5,0.5   ,0,0,0,   1.0,0.0,0.0}},{{0.5,0.5,-0.5   ,0,0,0,   1.0,0.5,0.0},{0.5,0.5,0.5   ,0,0,0,   1.0,0.5,0.0},{0.5,-0.5,0.5   ,0,0,0,   1.0,0.5,0.0},{0.5,-0.5,-0.5   ,0,0,0,   1.0,0.5,0.0}}};
+ 
+ float vertex1[9] = {0.5,0.5,0.5   ,0,0,0,   0.0,1.0,0.0}; //green[0]
+ float vertex2[9] = {0.5,0.5,0.5   ,0,0,0,   0.0,1.0,0.0}; //green
+ float vertex3[9] = {0.5,0.5,0.5   ,0,0,0,   0.0,1.0,0.0}; //green
+ float vertex4[9] = {0.5,0.5,0.5   ,0,0,0,   0.0,1.0,0.0}; //green
+ 
+ */
+

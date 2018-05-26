@@ -8,6 +8,8 @@
 #include "SDL/window.cpp"
 #include "render/cube_render.cpp"
 #include "rubixcube/headers/rubix_cube.hpp"
+#include "cube.hpp"
+#include <iostream>
 
 int main()
 {
@@ -38,6 +40,15 @@ int main()
     initialize_window();
     
     bool quit = false;
+    
+    //test array cube
+    cube petitscubes[2];
+    cube *cubearray = petitscubes;
+    petitscubes[1].receive_coordonate(1, 1, 1, 0, 0, 0);
+    
+    
+    //petitcube.receive_coordonate(0.0, 0.0, 0.0);
+    //std::cout << petitcube.vertex1[0] << std::endl;
     while (1) {
         SDL_Event ev;
         
@@ -54,7 +65,7 @@ int main()
         double *cam;
         cam = camera;
         camera_rotation(angle, cam);
-        Rendering(cam);
+        Rendering(cam, cubearray);
         angle = angle + 0.01;
         if (angle > 359.95)
         {
