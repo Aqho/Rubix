@@ -1,5 +1,5 @@
 #include <math.h>
-#define DIST -4
+#define DIST -3
 
 void camera_rotation(double degres, double *camera)
 {
