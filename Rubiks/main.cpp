@@ -37,7 +37,7 @@ int main() {
     myCube->tabCubes[i]->coord[1] = basicCoord[i][1];
     myCube->tabCubes[i]->coord[2] = basicCoord[i][2];
   }
-  for (int i = 0; i < 25; i++) {
+  for (int i = 0; i < 27; i++) {
     displayCoordCube(myCube, i);
   }
   return 0;
