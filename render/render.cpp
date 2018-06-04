@@ -1,4 +1,4 @@
-#include "headers/cube_render.hpp"
+#include "headers/render.hpp"
 #include "../rubixcube/headers/cube.hpp"
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>

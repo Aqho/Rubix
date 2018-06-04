@@ -1,7 +1,7 @@
+#include "headers/window.hpp"
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
-#include <GLKit/GLKMatrix4.h>
 #include <SDL2/SDL.h>
 #include <iostream>
 
@@ -11,7 +11,7 @@ if (e##__LINE__ != GL_NO_ERROR) \
 fprintf(stderr,"ERROR:%d:glerr=%d\n", __LINE__, e##__LINE__); \
 } while(0)
 
-static void initialize_window(void)
+static void window::initialize_window(*rubix_window)
 {
     SDL_Window *rubix_window = SDL_GL_GetCurrentWindow();
     glClearColor(0.0, 0.0, 0.0, 0.0);
