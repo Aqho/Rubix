@@ -43,19 +43,19 @@ int main()
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         return EXIT_FAILURE;
-
+    
 #if 0
     /* configure the OpenGL version to use. */
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,SDL_GL_CONTEXT_PROFILE_CORE);
 #endif
-
+    
     /* create a window suitable for OpenGL. */
     SDL_Window *mainwin = SDL_CreateWindow("Cube",
                                            SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                            800, 400, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-
+    
     if (!mainwin) {
         fprintf(stderr, "ERROR:%s\n", SDL_GetError());
         //goto failure;
@@ -68,16 +68,16 @@ int main()
     float angle = 0.0;
     bool quit = false;
     window_initializer();
-
+    
     //test array cube
     float rot = 0.0;
     cube petitscubes[2];
     cube *cubearray = petitscubes;
     petitscubes[1].receive_coordonate(0, 1, 1, 0, 0, 0);
-
+    
     while (1) {
         SDL_Event ev;
-
+        
         /* process events until timeout occurs */
         while (SDL_WaitEventTimeout(&ev, 15)) {
             switch (ev.type) {
@@ -86,7 +86,7 @@ int main()
                     goto bail;
             }
         }
-
+        
         float camera[3];
         float *cam = camera;
         camera_position my_cam;
@@ -108,7 +108,7 @@ int main()
         }
     }
 bail:
-
+    
     SDL_DestroyWindow(mainwin);
     SDL_Quit();
     return 0;

@@ -1,7 +1,12 @@
 #include "headers/render.hpp"
 #include "../rubixcube/headers/cube.hpp"
+#ifdef __unix__
+#include <GL/glu.h>
+#else
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
+#include <GLUT/glut.h>
+#endif
 #include <SDL2/SDL.h>
 #include <iostream>
 
