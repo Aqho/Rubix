@@ -2,7 +2,6 @@
 #include "../rubixcube/headers/cube.hpp"
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
-#include <GLUT/glut.h>
 #include <SDL2/SDL.h>
 #include <iostream>
 

@@ -30,6 +30,7 @@ void cube::receive_coordonate(float x, float y, float z, float Ox, float Oy, flo
                 {
                     if (coord == 0){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][0]*cos(Oz)-vertexcubebase[face][vertex][1]*sin(Oz)+x;}
                     if (coord == 1){vertexcube[face][vertex][coord] = +vertexcubebase[face][vertex][0]*sin(Oz)+vertexcubebase[face][vertex][1]*cos(Oz)+z;}
+                    
                 }
             }
         }

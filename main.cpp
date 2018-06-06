@@ -3,12 +3,11 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
-#include <GLKit/GLKMatrix4.h>
 #include <math.h>
 #include "graphic_function/headers/camera_position.hpp"
 #include "render/headers/render.hpp"
-#include "rubixcube/headers/rubix_cube.hpp"
 #include "rubixcube/headers/cube.hpp"
+//#include "graphic_function/headers/cube_rotation.hpp"
 #include <iostream>
 
 #define check_gl_error() do { \
