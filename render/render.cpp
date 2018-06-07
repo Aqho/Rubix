@@ -13,7 +13,6 @@
 
 void render::Rendering(float *camera, cube *cubearray)
 {
-    
     SDL_Window *win = SDL_GL_GetCurrentWindow();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
     glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
@@ -21,7 +20,6 @@ void render::Rendering(float *camera, cube *cubearray)
     // Render a color-cube consisting of 6 quads with different colors
     glLoadIdentity();                 // Reset the model-view matrix
     gluLookAt(camera[0] , camera[1] , camera[2]+0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-    
     
     cube petitcube;
     glClearColor(0.0, 0.0, 0.0, 0.0);

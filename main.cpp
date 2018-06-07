@@ -24,7 +24,6 @@ fprintf(stderr,"ERROR:%d:glerr=%d\n", __LINE__, e##__LINE__); \
 } while(0)
 
 
-
 // This will be our coordinates to create the ptitCubes
 float basicCoord[27][3] = {{-1,2,1},{0,1,1},{1,1,1},  // 0-2
     {-1,0,1},{0,0,1},{1,0,1},           // 3-5
@@ -76,19 +75,19 @@ int main()
     }
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         return EXIT_FAILURE;
-    
+
 #if 0
     /* configure the OpenGL version to use. */
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,SDL_GL_CONTEXT_PROFILE_CORE);
 #endif
-    
+
     /* create a window suitable for OpenGL. */
     SDL_Window *mainwin = SDL_CreateWindow("Cube",
                                            SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                            800, 400, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-    
+
     if (!mainwin) {
         fprintf(stderr, "ERROR:%s\n", SDL_GetError());
         //goto failure;
@@ -150,7 +149,6 @@ int main()
         }
     }
 bail:
-    
     SDL_DestroyWindow(mainwin);
     SDL_Quit();
     return 0;
