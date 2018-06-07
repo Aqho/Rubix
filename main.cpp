@@ -1,5 +1,28 @@
+#define GL3_PROTOTYPES 1
+
+#ifdef __unix__
+#include <GL/glu.h>
+#else
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
+#endif
+
+#include <SDL2/SDL.h>
+#include <math.h>
+#include "graphic_function/headers/camera_position.hpp"
+#include "render/headers/render.hpp"
+#include "rubikscube/headers/cube.hpp"
+//#include "graphic_function/headers/cube_rotation.hpp"
 #include <iostream>
-#include <string>
+
+#define check_gl_error() do { \
+GLenum e##__LINE__ = glGetError(); \
+if (e##__LINE__ != GL_NO_ERROR) \
+fprintf(stderr,"ERROR:%d:glerr=%d\n", __LINE__, e##__LINE__); \
+} while(0)
+
+#define PI 3.14159265
 
 // This will be our coordinates to create the ptitCubes
 float basicCoord[27][3] = {{-1,1,1},{0,1,1},{1,1,1},  // 0-2
@@ -12,13 +35,7 @@ float basicCoord[27][3] = {{-1,1,1},{0,1,1},{1,1,1},  // 0-2
                   {-1,0,-1},{0,0,-1},{1,0,-1},        // 21-23
                   {-1,-1,-1},{0,-1,-1},{1,-1,-1}};    // 24-26
 
-class ptitCube{
-public:
-  float coord[3] = {0,0,0};  // [x, y, z] coordonnées
-  float orient[3] = {0,0,0}; // [Ox, Oy, Oz] orientation des axes
-  char familly;              // m (middle), e (edge) or c (corner)
-};
-
+/*
 class rubiksCube{
 public:
   // Array that will contain the colors 9 colors of each faces
@@ -28,241 +45,107 @@ public:
                        {'Y','Y','Y','Y','Y','Y','Y','Y','Y'},  // index 3 = yellow face
                        {'R','R','R','R','R','R','R','R','R'},  // index 4 = red face
                        {'B','B','B','B','B','B','B','B','B'}}; // index 5 = blue face
-
+*/
   // A RubiksCube is composed by 26 ptitCubes (or 27, but the center one is invisible)
-  ptitCube* tabCubes[27];
-};
+  cube tabCubes[27];
+  cube *arrayCube = tabCubes;
+//};
 
-void displayCoordCube(rubiksCube *cube, int idCube){
-  std::cout << cube->tabCubes[idCube]->coord[0] << ",";
-  std::cout << cube->tabCubes[idCube]->coord[1] << ",";
-  std::cout << cube->tabCubes[idCube]->coord[2] << " : " << idCube;
-  std::cout << "\n";
+static void window_initializer(void)
+{
+    SDL_Window *main_win = SDL_GL_GetCurrentWindow();
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    SDL_GL_SwapWindow(main_win);
+    int width, height;
+    SDL_GetWindowSize(main_win, &width, &height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(70, 800/400, 0.1, 1000);
+    glEnable(GL_DEPTH_TEST);
+    glTranslated(0.0, 0.0, -1.0);
+    check_gl_error();
 }
 
-void displayFlatCube(rubiksCube *cube){
-  printf("\nDisplaying flat Rubik's Cube\n");
-  printf("\n");
-  printf("              -----------\n");
-  printf("             | %c | %c | %c |\n",cube->colors[1][0],cube->colors[1][1],cube->colors[1][2]);
-  printf("             | %c | %c | %c |\n",cube->colors[1][7],cube->colors[1][8],cube->colors[1][3]);
-  printf("             | %c | %c | %c |\n",cube->colors[1][6],cube->colors[1][5],cube->colors[1][4]);
-  printf("              -----------\n");
-  printf(" -----------  -----------  -----------  -----------\n");
-
-  printf("| %c | %c | %c || %c | %c | %c || %c | %c | %c || %c | %c | %c |\n",
-  cube->colors[2][0],cube->colors[2][1],cube->colors[2][2],cube->colors[0][0],cube->colors[0][1],cube->colors[0][2],
-  cube->colors[4][0],cube->colors[4][1],cube->colors[4][2],cube->colors[5][0],cube->colors[5][1],cube->colors[5][2]);
-
-  printf("| %c | %c | %c || %c | %c | %c || %c | %c | %c || %c | %c | %c |\n",
-  cube->colors[2][7],cube->colors[2][8],cube->colors[2][3],cube->colors[0][7],cube->colors[0][8],cube->colors[0][3],
-  cube->colors[4][7],cube->colors[4][8],cube->colors[4][3],cube->colors[5][7],cube->colors[5][8],cube->colors[5][3]);
-
-  printf("| %c | %c | %c || %c | %c | %c || %c | %c | %c || %c | %c | %c |\n",
-  cube->colors[2][6],cube->colors[2][5],cube->colors[2][4],cube->colors[0][6],cube->colors[0][5],cube->colors[0][4],
-  cube->colors[4][6],cube->colors[4][5],cube->colors[4][4],cube->colors[5][6],cube->colors[5][5],cube->colors[5][4]);
-  printf(" -----------  -----------  -----------  -----------\n");
-  printf("              -----------\n");
-  printf("             | %c | %c | %c |\n",cube->colors[3][0],cube->colors[3][1],cube->colors[3][2]);
-  printf("             | %c | %c | %c |\n",cube->colors[3][7],cube->colors[3][8],cube->colors[3][3]);
-  printf("             | %c | %c | %c |\n",cube->colors[3][6],cube->colors[3][5],cube->colors[3][4]);
-  printf("              -----------\n");
-}
-
-// This function takes the face's number parameter which you want to rotate clockwise
-void rotateFaceColors(rubiksCube *cube, int face){
-  char tempColors[6][9];
-  for (int i=0; i<6; i++){
-     for (int j=0; j<9; j++){
-        tempColors[i][j]=cube->colors[i][j];
-     }
-  }
-  cube->colors[face][0]=tempColors[face][6];
-  cube->colors[face][1]=tempColors[face][7];
-  cube->colors[face][2]=tempColors[face][0];
-  cube->colors[face][3]=tempColors[face][1];
-  cube->colors[face][4]=tempColors[face][2];
-  cube->colors[face][5]=tempColors[face][3];
-  cube->colors[face][6]=tempColors[face][4];
-  cube->colors[face][7]=tempColors[face][5];
-}
-
-void rotateGreenFace(rubiksCube *cube){
-  // Rotate green face clockwise
-  rotateFaceColors(cube, 0);
-  // Rotate involved lines
-  char tempColors[6][9];
-  for (int i=0; i<6; i++){
-     for (int j=0; j<9; j++){
-        tempColors[i][j]=cube->colors[i][j];
-     }
-  }
-  cube->colors[1][6]=tempColors[2][4];
-  cube->colors[1][5]=tempColors[2][3];
-  cube->colors[1][4]=tempColors[2][2];
-  cube->colors[4][0]=tempColors[1][6];
-  cube->colors[4][7]=tempColors[1][5];
-  cube->colors[4][6]=tempColors[1][4];
-  cube->colors[3][2]=tempColors[4][0];
-  cube->colors[3][1]=tempColors[4][7];
-  cube->colors[3][0]=tempColors[4][6];
-  cube->colors[2][4]=tempColors[3][2];
-  cube->colors[2][3]=tempColors[3][1];
-  cube->colors[2][2]=tempColors[3][0];  
-}
-
-void rotateWhiteFace(rubiksCube *cube){
-  // Rotate white face clockwise
-  rotateFaceColors(cube, 1);
-  // Rotate involved lines
-  char tempColors[6][9];
-  for (int i=0; i<6; i++){
-     for (int j=0; j<9; j++){
-        tempColors[i][j]=cube->colors[i][j];
-     }
-  }
-  cube->colors[0][2]=tempColors[4][2];
-  cube->colors[0][1]=tempColors[4][1];
-  cube->colors[0][0]=tempColors[4][0];
-  cube->colors[2][2]=tempColors[0][2];
-  cube->colors[2][1]=tempColors[0][1];
-  cube->colors[2][0]=tempColors[0][0];
-  cube->colors[5][0]=tempColors[2][0];
-  cube->colors[5][1]=tempColors[2][1];
-  cube->colors[5][2]=tempColors[2][2];
-  cube->colors[4][0]=tempColors[5][0];
-  cube->colors[4][1]=tempColors[5][1];
-  cube->colors[4][2]=tempColors[5][2];  
-}
-
-void rotateOrangeFace(rubiksCube *cube){
-  // Rotate orange face clockwise
-  rotateFaceColors(cube, 2);
-  // Rotate involved lines
-  char tempColors[6][9];
-  for (int i=0; i<6; i++){
-     for (int j=0; j<9; j++){
-        tempColors[i][j]=cube->colors[i][j];
-     }
-  }
-  cube->colors[0][0]=tempColors[1][0];
-  cube->colors[0][7]=tempColors[1][7];
-  cube->colors[0][6]=tempColors[1][6];
-  cube->colors[3][0]=tempColors[0][0];
-  cube->colors[3][6]=tempColors[0][7];
-  cube->colors[3][7]=tempColors[0][6];
-  cube->colors[5][4]=tempColors[3][0];
-  cube->colors[5][3]=tempColors[3][6];
-  cube->colors[5][2]=tempColors[3][7];
-  cube->colors[1][0]=tempColors[5][4];
-  cube->colors[1][7]=tempColors[5][3];
-  cube->colors[1][6]=tempColors[5][2];  
-}
-
-void rotateYellowFace(rubiksCube *cube){
-  // Rotate yellow face clockwise
-  rotateFaceColors(cube, 3);
-  // Rotate involved lines
-  char tempColors[6][9];
-  for (int i=0; i<6; i++){
-     for (int j=0; j<9; j++){
-        tempColors[i][j]=cube->colors[i][j];
-     }
-  }
-  cube->colors[0][6]=tempColors[2][6];
-  cube->colors[0][5]=tempColors[2][5];
-  cube->colors[0][4]=tempColors[2][4];
-  cube->colors[4][6]=tempColors[0][6];
-  cube->colors[4][5]=tempColors[0][5];
-  cube->colors[4][4]=tempColors[0][4];
-  cube->colors[5][6]=tempColors[4][6];
-  cube->colors[5][5]=tempColors[4][5];
-  cube->colors[5][4]=tempColors[4][4];
-  cube->colors[2][6]=tempColors[5][6];
-  cube->colors[2][5]=tempColors[5][5];
-  cube->colors[2][4]=tempColors[5][4];  
-}
-
-void rotateRedFace(rubiksCube *cube){
-  // Rotate red face clockwise
-  rotateFaceColors(cube, 4);
-  // Rotate involved lines
-  char tempColors[6][9];
-  for (int i=0; i<6; i++){
-     for (int j=0; j<9; j++){
-        tempColors[i][j]=cube->colors[i][j];
-     }
-  }
-  cube->colors[0][4]=tempColors[3][4];
-  cube->colors[0][3]=tempColors[3][3];
-  cube->colors[0][2]=tempColors[3][2];
-  cube->colors[1][4]=tempColors[0][4];
-  cube->colors[1][3]=tempColors[0][3];
-  cube->colors[1][2]=tempColors[0][2];
-  cube->colors[5][0]=tempColors[1][4];
-  cube->colors[5][7]=tempColors[1][3];
-  cube->colors[5][6]=tempColors[1][2];
-  cube->colors[3][4]=tempColors[5][0];
-  cube->colors[3][3]=tempColors[5][7];
-  cube->colors[3][2]=tempColors[5][6];  
-}
-
-void rotateBlueFace(rubiksCube *cube){
-  // Rotate blue face clockwise
-  rotateFaceColors(cube, 5);
-  // Rotate involved lines
-  char tempColors[6][9];
-  for (int i=0; i<6; i++){
-     for (int j=0; j<9; j++){
-        tempColors[i][j]=cube->colors[i][j];
-     }
-  }
-  cube->colors[1][2]=tempColors[4][4];
-  cube->colors[1][1]=tempColors[4][3];
-  cube->colors[1][0]=tempColors[4][2];
-  cube->colors[2][0]=tempColors[1][2];
-  cube->colors[2][7]=tempColors[1][1];
-  cube->colors[2][6]=tempColors[1][0];
-  cube->colors[3][6]=tempColors[2][0];
-  cube->colors[3][5]=tempColors[2][7];
-  cube->colors[3][4]=tempColors[2][6];
-  cube->colors[4][4]=tempColors[3][6];
-  cube->colors[4][3]=tempColors[3][5];
-  cube->colors[4][2]=tempColors[3][4];  
-}
-
-int main() {
-  rubiksCube *myCube = new rubiksCube();
-  for (int i = 0; i < 27; i++) {
-    myCube->tabCubes[i] = new ptitCube();
-    myCube->tabCubes[i]->coord[0] = basicCoord[i][0];
-    myCube->tabCubes[i]->coord[1] = basicCoord[i][1];
-    myCube->tabCubes[i]->coord[2] = basicCoord[i][2];
-  }
-  for (int i = 0; i < 27; i++) {
-    //displayCoordCube(myCube, i);
-  }
-  displayFlatCube(myCube);
-  std::string choice = "";
-  while (choice != "exit"){
-    std::cout << "Move (type 'exit' to exit) : ";
-    std::cin >> choice;
-    if (choice == "exit"){
-      break;
-    } else if (choice == "U"){ // Rotate up face
-      rotateWhiteFace(myCube);
-    } else if (choice == "F"){ // Rotate front face
-      rotateGreenFace(myCube);
-    } else if (choice == "L"){ // Rotate left face
-      rotateOrangeFace(myCube);
-    } else if (choice == "R"){ // Rotate right face
-      rotateRedFace(myCube);
-    } else if (choice == "B"){ // Rotate back face
-      rotateBlueFace(myCube);
-    } else if (choice == "D"){ // Rotate down face
-      rotateYellowFace(myCube);
+int main()
+{
+    //rubiksCube *myCube = new rubiksCube;
+    for (int i = 0; i < 27; i++) {
+      tabCubes[i].receive_coordonate(basicCoord[i][0],basicCoord[i][1],basicCoord[i][2],0,0,0);
+      std::cout << tabCubes[i].vertexcube[0][0][0] << tabCubes[i].vertexcube[0][0][1] << tabCubes[i].vertexcube[0][0][2] << std::endl;
     }
-    displayFlatCube(myCube);
-  }
-  return 0;
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+        return EXIT_FAILURE;
+
+#if 0
+    /* configure the OpenGL version to use. */
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,SDL_GL_CONTEXT_PROFILE_CORE);
+#endif
+
+    /* create a window suitable for OpenGL. */
+    SDL_Window *mainwin = SDL_CreateWindow("Cube",
+                                           SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                           800, 400, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+
+    if (!mainwin) {
+        fprintf(stderr, "ERROR:%s\n", SDL_GetError());
+        //goto failure;
+    }
+    SDL_GLContext glctx = SDL_GL_CreateContext(mainwin);
+    if (!glctx) {
+        fprintf(stderr, "ERROR:%s\n", SDL_GetError());
+        //goto cleanup;
+    }
+    float angle = 0.0;
+    bool quit = false;
+    window_initializer();
+
+    //test array cube
+    float rot = 0.0;
+
+    //petitscubes[1].receive_coordonate(0, 1, 1, 0, 0, 0);
+
+    while (1) {
+        SDL_Event ev;
+
+        /* process events until timeout occurs */
+        while (SDL_WaitEventTimeout(&ev, 15)) {
+            switch (ev.type) {
+                case SDL_QUIT:
+                    quit = true;
+                    goto bail;
+            }
+        }
+
+        float camera[3];
+        float *cam = camera;
+        camera_position my_cam;
+        my_cam.camera_rotation(angle, cam);
+        render actual_render;
+        actual_render.Rendering(cam, arrayCube);
+        angle = angle + 0.02;
+        rot = rot + 1;
+        //std::cout << rot << std::endl;
+        tabCubes[0].receive_coordonate(0, 1, 1, 0, 0, rot * PI / 180);
+        if (rot > 359.95)
+        {
+            rot = 0.0;
+        }
+        if (angle > 359.95)
+        {
+            angle = 0.0;
+        }
+    }
+bail:
+
+    SDL_DestroyWindow(mainwin);
+    SDL_Quit();
+    return 0;
+cleanup:
+    SDL_DestroyWindow(mainwin);
+failure:
+    SDL_Quit();
+    return EXIT_FAILURE;
 }
