@@ -15,6 +15,7 @@
 #include "rubikscube/headers/cube.hpp"
 //#include "graphic_function/headers/cube_rotation.hpp"
 #include <iostream>
+#define PI 3.14159265
 
 #define check_gl_error() do { \
 GLenum e##__LINE__ = glGetError(); \
@@ -22,33 +23,32 @@ if (e##__LINE__ != GL_NO_ERROR) \
 fprintf(stderr,"ERROR:%d:glerr=%d\n", __LINE__, e##__LINE__); \
 } while(0)
 
-#define PI 3.14159265
 
 // This will be our coordinates to create the ptitCubes
-float basicCoord[27][3] = {{-1,1,1},{0,1,1},{1,1,1},  // 0-2
-                  {-1,0,1},{0,0,1},{1,0,1},           // 3-5
-                  {-1,-1,1},{0,-1,1},{1,-1,-1},       // 6-8
-                  {-1,1,0},{0,1,0},{1,1,0},           // 9-11
-                  {-1,0,0},{0,0,0},{1,0,0},           // 12-14
-                  {-1,-1,0},{0,-1,0},{1,-1,0},        // 15-17
-                  {-1,1,-1},{0,1,-1},{1,1,-1},        // 18-20
-                  {-1,0,-1},{0,0,-1},{1,0,-1},        // 21-23
-                  {-1,-1,-1},{0,-1,-1},{1,-1,-1}};    // 24-26
+float basicCoord[27][3] = {{-1,2,1},{0,1,1},{1,1,1},  // 0-2
+    {-1,0,1},{0,0,1},{1,0,1},           // 3-5
+    {-1,-1,1},{0,-1,1},{1,-1,1},       // 6-8
+    {-1,1,0},{0,1,0},{1,1,0},           // 9-11
+    {-1,0,0},{0,0,0},{1,0,0},           // 12-14
+    {-1,-1,0},{0,-1,0},{1,-1,0},        // 15-17
+    {-1,1,-1},{0,1,-1},{1,1,-1},        // 18-20
+    {-1,0,-1},{0,0,-1},{1,0,-1},        // 21-23
+    {-1,-1,-1},{0,-1,-1},{1,-1,-1}};    // 24-26
 
 /*
-class rubiksCube{
-public:
-  // Array that will contain the colors 9 colors of each faces
-  char colors[6][9] = {{'G','G','G','G','G','G','G','G','G'},  // index 0 = green face
-                       {'W','W','W','W','W','W','W','W','W'},  // index 1 = white face
-                       {'O','O','O','O','O','O','O','O','O'},  // index 2 = orange face
-                       {'Y','Y','Y','Y','Y','Y','Y','Y','Y'},  // index 3 = yellow face
-                       {'R','R','R','R','R','R','R','R','R'},  // index 4 = red face
-                       {'B','B','B','B','B','B','B','B','B'}}; // index 5 = blue face
-*/
-  // A RubiksCube is composed by 26 ptitCubes (or 27, but the center one is invisible)
-  cube tabCubes[27];
-  cube *arrayCube = tabCubes;
+ class rubiksCube{
+ public:
+ // Array that will contain the colors 9 colors of each faces
+ char colors[6][9] = {{'G','G','G','G','G','G','G','G','G'},  // index 0 = green face
+ {'W','W','W','W','W','W','W','W','W'},  // index 1 = white face
+ {'O','O','O','O','O','O','O','O','O'},  // index 2 = orange face
+ {'Y','Y','Y','Y','Y','Y','Y','Y','Y'},  // index 3 = yellow face
+ {'R','R','R','R','R','R','R','R','R'},  // index 4 = red face
+ {'B','B','B','B','B','B','B','B','B'}}; // index 5 = blue face
+ */
+// A RubiksCube is composed by 26 ptitCubes (or 27, but the center one is invisible)
+cube tabCubes[27];
+cube *arrayCube = tabCubes;
 //};
 
 static void window_initializer(void)
@@ -71,8 +71,7 @@ int main()
 {
     //rubiksCube *myCube = new rubiksCube;
     for (int i = 0; i < 27; i++) {
-      tabCubes[i].receive_coordonate(basicCoord[i][0],basicCoord[i][1],basicCoord[i][2],0,0,0);
-      std::cout << tabCubes[i].vertexcube[0][0][0] << tabCubes[i].vertexcube[0][0][1] << tabCubes[i].vertexcube[0][0][2] << std::endl;
+        tabCubes[i].receive_coordonate(basicCoord[i][0],basicCoord[i][1],basicCoord[i][2],0,0,0);
     }
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         return EXIT_FAILURE;
@@ -101,34 +100,45 @@ int main()
     float angle = 0.0;
     bool quit = false;
     window_initializer();
-
+    
     //test array cube
     float rot = 0.0;
-
+    int direction = 0;
+    float camera[6]{0,0,0,0,0,0};
     //petitscubes[1].receive_coordonate(0, 1, 1, 0, 0, 0);
-
+    
     while (1) {
         SDL_Event ev;
-
         /* process events until timeout occurs */
-        while (SDL_WaitEventTimeout(&ev, 15)) {
+        while (SDL_WaitEventTimeout(&ev, 20)) {
             switch (ev.type) {
                 case SDL_QUIT:
                     quit = true;
                     goto bail;
+                case SDL_KEYDOWN:
+                    if(ev.key.keysym.sym == SDLK_RIGHT){direction = 1;}
+                    if(ev.key.keysym.sym == SDLK_LEFT){direction = 2;}
+                    if(ev.key.keysym.sym == SDLK_UP){direction = 3;}
+                    if(ev.key.keysym.sym == SDLK_DOWN){direction = 4;}
             }
         }
-
-        float camera[3];
+        if ( SDL_PollEvent(&ev) == 1 )
+        {
+            
+        }
         float *cam = camera;
         camera_position my_cam;
-        my_cam.camera_rotation(angle, cam);
+        my_cam.camera_rotation(direction, cam);
+        direction = 0;
         render actual_render;
         actual_render.Rendering(cam, arrayCube);
-        angle = angle + 0.02;
+        //angle = angle + 0.02;
         rot = rot + 1;
         //std::cout << rot << std::endl;
-        tabCubes[0].receive_coordonate(0, 1, 1, 0, 0, rot * PI / 180);
+        for(int i = 0; i < 9; i++)
+        {
+            tabCubes[i].receive_coordonate(tabCubes[i].coordonate[0], tabCubes[i].coordonate[1], tabCubes[i].coordonate[2], 0, 0, 45.0 * PI / 180);
+        }
         if (rot > 359.95)
         {
             rot = 0.0;
@@ -139,7 +149,6 @@ int main()
         }
     }
 bail:
-
     SDL_DestroyWindow(mainwin);
     SDL_Quit();
     return 0;
