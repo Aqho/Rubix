@@ -1,11 +1,27 @@
 #include "headers/camera_position.hpp"
 #include <math.h>
 
-#define DIST -3
+#define DIST -5
+#define PI 3.14159265
+#include <iostream>
 
-void camera_position::camera_rotation(float degres, float *camera)
+void camera_position::camera_rotation(int direction, float *camera)
 {
-    camera[0]=DIST*cos(degres);
-    camera[1]=DIST*sin(degres);
-    camera[2]=0;
+    if (direction == 1){
+        if(camera[3]!=359.9){camera[3] = camera[3]+2;}
+        else{camera[3]=0;}
+    }
+    else if (direction == 2){
+            if(camera[3]!=-359.9){camera[3] =camera[3] -2;}
+            else{camera[3]=0;}
+    }
+    else if (direction == 3){
+            if (camera[2] < 8.0f){camera[2] = camera[2]+0.2;}
+    }
+    else if (direction == 4){
+        if (camera[2] > -8.0f){camera[2] = camera[2]-0.2;}
+                
+    }
+    camera[0]=DIST*cos(camera[3] * PI / 180);
+    camera[1]=DIST*sin(camera[3] * PI / 180);
 }
