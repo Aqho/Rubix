@@ -52,19 +52,19 @@ int main()
     myCube->initCube();
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         return EXIT_FAILURE;
-
+    
 #if 0
     /* configure the OpenGL version to use. */
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,SDL_GL_CONTEXT_PROFILE_CORE);
 #endif
-
+    
     /* create a window suitable for OpenGL. */
     SDL_Window *mainwin = SDL_CreateWindow("Cube",
                                            SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                            800, 400, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-
+    
     if (!mainwin) {
         fprintf(stderr, "ERROR:%s\n", SDL_GetError());
         SDL_Quit();
@@ -78,13 +78,13 @@ int main()
     float angle = 0.0;
     bool quit = false;
     window_initializer();
-
+    
     //test array cube
     float rot = 0.0;
     int direction = 0;
     float camera[6]{0,0,0,0,0,0};
     //petitscubes[1].receive_coordonate(0, 1, 1, 0, 0, 0);
-
+    
     while (quit != true) {
         SDL_Event ev;
         /* process events until timeout occurs */
@@ -108,7 +108,7 @@ int main()
         }
         if ( SDL_PollEvent(&ev) == 1 )
         {
-
+            
         }
         float *cam = camera;
         camera_position my_cam;
