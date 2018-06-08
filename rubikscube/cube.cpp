@@ -12,29 +12,16 @@ void cube::receive_coordonate(float x, float y, float z, float Ox, float Oy, flo
         {
             for (int coord = 0; coord < 3; coord++)
             {
-                if (coord == 0){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][coord]+x;}
-                if (coord == 1){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][coord]+y;}
-                if (coord == 2){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][coord]+z;}
-                if (Ox !=0 && Oy == 0 && Oz ==0)
-                {
-                    if (coord == 0){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][0]*cos(Oz)-vertexcubebase[face][vertex][1]*sin(Oz)+x;}
-                    if (coord == 1){vertexcube[face][vertex][coord] = +vertexcubebase[face][vertex][0]*sin(Oz)+vertexcubebase[face][vertex][1]*cos(Oz)+z;}
-                }
-                if (Ox ==0 && Oy != 0 && Oz ==0)
-                {
-                    std::cout << Oy << std::endl;
-                    if (coord == 0){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][0]*cos(Oy)-vertexcubebase[face][vertex][1]*sin(Oy)+x;}
-                    if (coord == 1){vertexcube[face][vertex][coord] = +vertexcubebase[face][vertex][0]*sin(Oy)+vertexcubebase[face][vertex][1]*cos(Oy)+z;}
-                }
-                if (Ox ==0 && Oy == 0 && Oz !=0)
-                {
-                    if (coord == 0){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][0]*cos(Oz)-vertexcubebase[face][vertex][1]*sin(Oz)+x;}
-                    if (coord == 1){vertexcube[face][vertex][coord] = +vertexcubebase[face][vertex][0]*sin(Oz)+vertexcubebase[face][vertex][1]*cos(Oz)+z;}
-                    
-                }
+                if (coord == 0){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][coord]+x;coordonate[0]=x;}
+                if (coord == 1){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][coord]+y;coordonate[1]=y;}
+                if (coord == 2){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][coord]+z;coordonate[2]=z;}
             }
         }
     }
+}
+void cube::receive_state(char x)
+{
+    state = x;
 }
 /*
  {Y
@@ -53,13 +40,13 @@ void cube::receive_coordonate(float x, float y, float z, float Ox, float Oy, flo
  if (coord == 0){vertexcube[face][vertex][coord] = -vertexcubebase[face][vertex][1]*cos(Oy)+vertexcubebase[face][vertex][0]*sin(Oy) + -vertexcubebase[face][vertex][2]*cos(Oz)+vertexcubebase[face][vertex][0]*sin(Oz)+x;}
  if (coord == 1){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][1]*sin(Oy)+vertexcubebase[face][vertex][0]*cos(Oy) + -vertexcubebase[face][vertex][2]*cos(Ox)+vertexcubebase[face][vertex][1]*sin(Ox)+x;}
  if (coord == 2){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][2]*sin(Oz)+vertexcubebase[face][vertex][0]*cos(Oz) + vertexcubebase[face][vertex][2]*sin(Ox)+vertexcubebase[face][vertex][1]*cos(Ox)+z;}
-*/
+ */
 
 
 
 
 
- /*
+/*
  float vertexcube[6][4][9] = {{{0.5f,0.5f,-0.5f   ,0,0,0,   0.0,1.0,0.0}, {-0.5,0.5,-0.5   ,0,0,0,   0.0,1.0,0.0}, {-0.5,0.5,0.5   ,0,0,0,   0.0,1.0,0.0}, {0.5,0.5,0.5   ,0,0,0,   0.0,1.0,0.0}},{{0.5,-0.5,0.5   ,0,0,0,   0.0,0.0,1.0},{-0.5,-0.5,0.5   ,0,0,0,   0.0,0.0,1.0},{-0.5,-0.5,-0.5   ,0,0,0,   0.0,0.0,1.0},{0.5,-0.5,-0.5   ,0,0,0,   0.0,0.0,1.0}},{{0.5,0.5,0.5   ,0,0,0,   1.0,1.0,1.0},{-0.5,0.5,0.5   ,0,0,0,   1.0,1.0,1.0},{-0.5,-0.5,0.5   ,0,0,0,   1.0,1.0,1.0},{0.5,-0.5,0.5   ,0,0,0,   1.0,1.0,1.0}},{{0.5,-0.5,-0.5   ,0,0,0,   1.0,1.0,0.0},{-0.5,-0.5,-0.5   ,0,0,0,   1.0,1.0,0.0},{-0.5,0.5,-0.5   ,0,0,0,   1.0,1.0,0.0},{0.5,0.5,-0.5   ,0,0,0,   1.0,1.0,0.0}},{{-0.5,0.5,0.5   ,0,0,0,   1.0,0.0,0.0},{-0.5,0.5,-0.5   ,0,0,0,   1.0,0.0,0.0},{-0.5,-0.5,-0.5   ,0,0,0,   1.0,0.0,0.0},{-0.5,-0.5,0.5   ,0,0,0,   1.0,0.0,0.0}},{{0.5,0.5,-0.5   ,0,0,0,   1.0,0.5,0.0},{0.5,0.5,0.5   ,0,0,0,   1.0,0.5,0.0},{0.5,-0.5,0.5   ,0,0,0,   1.0,0.5,0.0},{0.5,-0.5,-0.5   ,0,0,0,   1.0,0.5,0.0}}};
  
  float vertex1[9] = {0.5,0.5,0.5   ,0,0,0,   0.0,1.0,0.0}; //green[0]

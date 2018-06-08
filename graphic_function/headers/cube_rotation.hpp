@@ -9,8 +9,9 @@
 class rotation_cube
 {
 public:
-    void rotation(float Ox, float Oy, float Oz,cube cube_rotate);
-    void rotateFaceColors(rubiksCube *cube);
+    void rotationU(float Ox, float Oy, float Oz,cube cube_rotate);
+    void rotationcube(float Ox, float Oy, float Oz,cube cube_rotate);
+    void rotateFaceColors(rubiksCube *cube, int face);
     void rotateGreenFace(rubiksCube *cube);
     void rotateWhiteFace(rubiksCube *cube);
     void rotateOrangeFace(rubiksCube *cube);
