@@ -52,19 +52,19 @@ int main()
     myCube->initCube();
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         return EXIT_FAILURE;
-
-    #if 0
-        /* configure the OpenGL version to use. */
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,SDL_GL_CONTEXT_PROFILE_CORE);
-    #endif
-
+    
+#if 0
+    /* configure the OpenGL version to use. */
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,SDL_GL_CONTEXT_PROFILE_CORE);
+#endif
+    
     /* create a window suitable for OpenGL. */
     SDL_Window *mainwin = SDL_CreateWindow("Cube",
                                            SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                            800, 400, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-
+    
     if (!mainwin) {
         fprintf(stderr, "ERROR:%s\n", SDL_GetError());
         SDL_Quit();
@@ -73,41 +73,55 @@ int main()
     SDL_GLContext glctx = SDL_GL_CreateContext(mainwin);
     if (!glctx) {
         fprintf(stderr, "ERROR:%s\n", SDL_GetError());
-        SDL_DestroyWindow(mainwin);
+        //goto cleanup;
     }
     float angle = 0.0;
     bool quit = false;
     window_initializer();
-
+    
     //test array cube
     float rot = 0.0;
-
+    int direction = 0;
+    float camera[6]{0,0,0,0,0,0};
     //petitscubes[1].receive_coordonate(0, 1, 1, 0, 0, 0);
-
-    while (1) {
+    
+    while (quit != true) {
         SDL_Event ev;
-
         /* process events until timeout occurs */
-        while (SDL_WaitEventTimeout(&ev, 15)) {
+        while (SDL_WaitEventTimeout(&ev, 20)) {
             switch (ev.type) {
                 case SDL_QUIT:
                     quit = true;
-                    SDL_DestroyWindow(mainwin);
-                    SDL_Quit();
-                    return 0;;
+                case SDL_KEYDOWN:
+                    if(ev.key.keysym.sym == SDLK_ESCAPE){quit = true;;}
+                    if(ev.key.keysym.sym == SDLK_RIGHT){direction = 1;}
+                    if(ev.key.keysym.sym == SDLK_LEFT){direction = 2;}
+                    if(ev.key.keysym.sym == SDLK_UP){direction = 3;}
+                    if(ev.key.keysym.sym == SDLK_DOWN){direction = 4;}
+                    if(ev.key.keysym.sym == SDLK_u){ myCube->doAskedMove("U", myCube);}
+                    if(ev.key.keysym.sym == SDLK_d){ myCube->doAskedMove("D", myCube);}
+                    if(ev.key.keysym.sym == SDLK_r){ myCube->doAskedMove("R", myCube);}
+                    if(ev.key.keysym.sym == SDLK_l){ myCube->doAskedMove("L", myCube);}
+                    if(ev.key.keysym.sym == SDLK_f){ myCube->doAskedMove("F", myCube);}
+                    if(ev.key.keysym.sym == SDLK_b){ myCube->doAskedMove("B", myCube);}
             }
         }
-
-        float camera[3];
+        if ( SDL_PollEvent(&ev) == 1 )
+        {
+            
+        }
         float *cam = camera;
         camera_position my_cam;
-        my_cam.camera_rotation(angle, cam);
+        my_cam.camera_rotation(direction, cam);
+        direction = 0;
         render actual_render;
         actual_render.Rendering(cam, myCube->arrayCube);
-        angle = angle + 0.02;
+        //angle = angle + 0.02;
         rot = rot + 1;
-        //std::cout << rot << std::endl;
-        myCube->tabCubes[0].receive_coordonate(0, 1, 1, 0, 0, rot * PI / 180);
+        for(int i = 0; i < 9; i++)
+        {
+            myCube->tabCubes[i].receive_coordonate(myCube->tabCubes[i].coordonate[0], myCube->tabCubes[i].coordonate[1], myCube->tabCubes[i].coordonate[2], 0, 0, 45.0 * PI / 180);
+        }
         if (rot > 359.95)
         {
             rot = 0.0;
@@ -116,8 +130,5 @@ int main()
         {
             angle = 0.0;
         }
-        std::cout << "Move (type 'exit' to exit) : ";
-        std::cin >> moves;
-        myCube->doAskedMove(moves, myCube);
     }
 }
