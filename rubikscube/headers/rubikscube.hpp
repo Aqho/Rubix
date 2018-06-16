@@ -16,6 +16,14 @@ public:
                              {-1,0,-1},{0,0,-1},{1,0,-1},        // 21-23
                              {-1,-1,-1},{0,-1,-1},{1,-1,-1}};    // 24-26
 
+  // Colors of a solved RubiksCube
+  char solvedColors[6][9] = {{'G','G','G','G','G','G','G','G','G'},  // index 0 = green face
+                       {'W','W','W','W','W','W','W','W','W'},  // index 1 = white face
+                       {'O','O','O','O','O','O','O','O','O'},  // index 2 = orange face
+                       {'Y','Y','Y','Y','Y','Y','Y','Y','Y'},  // index 3 = yellow face
+                       {'R','R','R','R','R','R','R','R','R'},  // index 4 = red face
+                       {'B','B','B','B','B','B','B','B','B'}}; // index 5 = blue face
+
   // Array that will contain the colors 9 colors of each faces
   char colors[6][9] = {{'G','G','G','G','G','G','G','G','G'},  // index 0 = green face
                        {'W','W','W','W','W','W','W','W','W'},  // index 1 = white face
@@ -24,12 +32,15 @@ public:
                        {'R','R','R','R','R','R','R','R','R'},  // index 4 = red face
                        {'B','B','B','B','B','B','B','B','B'}}; // index 5 = blue face
 
+
   // A RubiksCube is composed by 26 ptitCubes (or 27, but the center one is invisible)
   cube tabCubes[27];
   cube *arrayCube = tabCubes;
+  std::string movesDone;
   void initCube();
   void displayFlatCube(rubiksCube *cube);
   void doAskedMove(std::string moves, rubiksCube *cube);
+  bool isItFinished(rubiksCube *cube);
   void rotateFaceColors(rubiksCube *cube, int face);
   void rotateGreenFace(rubiksCube *cube);
   void rotateWhiteFace(rubiksCube *cube);
