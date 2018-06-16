@@ -75,14 +75,13 @@ int main()
         fprintf(stderr, "ERROR:%s\n", SDL_GetError());
         //goto cleanup;
     }
-    float angle = 0.0;
     bool quit = false;
     window_initializer();
     
     //test array cube
-    float rot = 0.0;
     int direction = 0;
     float camera[6]{0,0,0,0,0,0};
+    float *cam = camera;
     //petitscubes[1].receive_coordonate(0, 1, 1, 0, 0, 0);
     
     while (quit != true) {
@@ -98,37 +97,23 @@ int main()
                     if(ev.key.keysym.sym == SDLK_LEFT){direction = 2;}
                     if(ev.key.keysym.sym == SDLK_UP){direction = 3;}
                     if(ev.key.keysym.sym == SDLK_DOWN){direction = 4;}
-                    if(ev.key.keysym.sym == SDLK_u){ myCube->doAskedMove("U", myCube);}
-                    if(ev.key.keysym.sym == SDLK_d){ myCube->doAskedMove("D", myCube);}
-                    if(ev.key.keysym.sym == SDLK_r){ myCube->doAskedMove("R", myCube);}
-                    if(ev.key.keysym.sym == SDLK_l){ myCube->doAskedMove("L", myCube);}
-                    if(ev.key.keysym.sym == SDLK_f){ myCube->doAskedMove("F", myCube);}
-                    if(ev.key.keysym.sym == SDLK_b){ myCube->doAskedMove("B", myCube);}
+                    if(ev.key.keysym.sym == SDLK_u){ myCube->doAskedMove("U", myCube, cam);}
+                    if(ev.key.keysym.sym == SDLK_d){ myCube->doAskedMove("D", myCube, cam);}
+                    if(ev.key.keysym.sym == SDLK_r){ myCube->doAskedMove("R", myCube, cam);}
+                    if(ev.key.keysym.sym == SDLK_l){ myCube->doAskedMove("L", myCube, cam);}
+                    if(ev.key.keysym.sym == SDLK_f){ myCube->doAskedMove("F", myCube, cam);}
+                    if(ev.key.keysym.sym == SDLK_b){ myCube->doAskedMove("B", myCube, cam);}
             }
         }
         if ( SDL_PollEvent(&ev) == 1 )
         {
             
         }
-        float *cam = camera;
         camera_position my_cam;
         my_cam.camera_rotation(direction, cam);
         direction = 0;
         render actual_render;
         actual_render.Rendering(cam, myCube->arrayCube);
         //angle = angle + 0.02;
-        rot = rot + 1;
-        for(int i = 0; i < 9; i++)
-        {
-            myCube->tabCubes[i].receive_coordonate(myCube->tabCubes[i].coordonate[0], myCube->tabCubes[i].coordonate[1], myCube->tabCubes[i].coordonate[2], 0, 0, 45.0 * PI / 180);
-        }
-        if (rot > 359.95)
-        {
-            rot = 0.0;
-        }
-        if (angle > 359.95)
-        {
-            angle = 0.0;
-        }
     }
 }

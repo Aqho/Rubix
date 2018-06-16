@@ -29,7 +29,14 @@ public:
     cube *arrayCube = tabCubes;
     void initCube();
     void displayFlatCube(rubiksCube *cube);
-    void doAskedMove(std::string moves, rubiksCube *cube);
+    void doAskedMove(std::string moves, rubiksCube *cube,float *cam);
+    void rotateFaceColors(rubiksCube *cube, int face);
+    void rotateGreenFace(rubiksCube *cube);
+    void rotateWhiteFace(rubiksCube *cube);
+    void rotateOrangeFace(rubiksCube *cube);
+    void rotateYellowFace(rubiksCube *cube);
+    void rotateRedFace(rubiksCube *cube);
+    void rotateBlueFace(rubiksCube *cube);
 };
 
 #endif

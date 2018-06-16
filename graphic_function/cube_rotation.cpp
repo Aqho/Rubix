@@ -1,395 +1,398 @@
 #include "cube_rotation.hpp"
 #include "../rubikscube/headers/cube.hpp"
 #include "../rubikscube/headers/rubikscube.hpp"
+#include "../render/headers/render.hpp"
 #include <math.h>
+#include <iostream>
+#define PI 3.14159265
 
-void rotation_cube::rotationU(float Ox, float Oy, float Oz,cube cube_rotate)
+void cube_rotation::rotationU(rubiksCube *rubikscube_rotate, float *cam)
 {
-    for (int face = 0; face < 6; face++)
+    /*for (float angle = 0.0; angle < 90; angle=angle+0.2000)
     {
-        for (int vertex = 0; vertex < 4; vertex++)
-        {
-            for (int coord = 0; coord < 3; coord++)
+        for (int i = 0; i < 1; i++){
+            for (int face = 0; face < 6; face++)
             {
-                if (Ox ==0 && Oy == 0 && Oz !=0)
+                for (int vertex = 0; vertex < 4; vertex++)
                 {
-                    if (coord == 0){cube_rotate.vertexcube[face][vertex][coord] = cube_rotate.vertexcubebase[face][vertex][0]*cos(Oz)-cube_rotate.vertexcubebase[face][vertex][1]*sin(Oz)+cube_rotate.vertexcube[face][vertex][0];}
-                    if (coord == 1){cube_rotate.vertexcube[face][vertex][coord] = +cube_rotate.vertexcubebase[face][vertex][0]*sin(Oz)+cube_rotate.vertexcubebase[face][vertex][1]*cos(Oz)+cube_rotate.vertexcube[face][vertex][2];}
+                    for (int coord = 0; coord < 3; coord++)
+                    {
+                        //if (coord == 0){rubikscube_rotate->arrayCube[i].vertexcube[face][vertex][coord] = rubikscube_rotate->arrayCube[i].vertexcubebase[face][vertex][0]*cos(angle/180*PI)-rubikscube_rotate->arrayCube[i].vertexcubebase[face][vertex][1]*sin(angle/180*PI)+rubikscube_rotate->arrayCube[i].vertexcube[face][vertex][0];}
+                        //if (coord == 1){rubikscube_rotate->arrayCube[i].vertexcube[face][vertex][coord] = +rubikscube_rotate->arrayCube[i].vertexcubebase[face][vertex][0]*sin(angle/180*PI)+rubikscube_rotate->arrayCube[i].vertexcubebase[face][vertex][1]*cos(angle/180*PI)+rubikscube_rotate->arrayCube[i].vertexcube[face][vertex][2];}
+
+                    }
                 }
+            }
+        }
+        render actual_render;
+        actual_render.Rendering(cam, rubikscube_rotate->arrayCube);
+    }*/
+    swapU(rubikscube_rotate);
+}
+void cube_rotation::rotationD(rubiksCube *rubikscube_rotate, float *cam)
+{
+    swapD(rubikscube_rotate);
+}
+void cube_rotation::rotationF(rubiksCube *rubikscube_rotate, float *cam)
+{
+    swapF(rubikscube_rotate);
+}
+void cube_rotation::rotationR(rubiksCube *rubikscube_rotate, float *cam)
+{
+    swapR(rubikscube_rotate);
+}
+void cube_rotation::rotationB(rubiksCube *rubikscube_rotate, float *cam)
+{
+    swapB(rubikscube_rotate);
+}
+void cube_rotation::rotationL(rubiksCube *rubikscube_rotate, float *cam)
+{
+    swapL(rubikscube_rotate);
+}
+void cube_rotation::swapU(rubiksCube *rubikscube_rotate)
+{
+    for(int edge = 0; edge < 4; edge++)//Pour les 4 vertex par faces
+    {
+        for(int data = 6; data < 9; data++)//modification des données contenant le code couleur de la face.
+        {
+            //corner
+            rubikscube_rotate->arrayCube[0].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[0].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[0].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[0].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[2].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[2].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[2].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[2].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[8].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[8].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[8].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[8].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[2][edge][data];
+            
+            //upper face
+            rubikscube_rotate->arrayCube[0].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[1].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[3].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[2].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[3].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[7].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[5].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[1].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[7].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[5].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[8].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[4][edge][data];
+            
+            //edge
+            rubikscube_rotate->arrayCube[1].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[3].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[1].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[3].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[1].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[3].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[1].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[3].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[5].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[1].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[5].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[1].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[5].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[1].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[5].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[1].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[7].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[5].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[7].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[5].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[7].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[5].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[7].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[5].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[3].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[7].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[3].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[7].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[3].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[7].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[3].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[7].vertexcubebase[2][edge][data];
+        }
+    }
+    save(rubikscube_rotate);
+    
+}
+void cube_rotation::swapD(rubiksCube *rubikscube_rotate)
+{
+    for(int cube = 18; cube<27; cube++)
+    {
+        for(int edge = 0; edge < 4; edge++)
+        {
+            for(int data = 6; data < 9; data++)
+            {
+                rubikscube_rotate->arrayCube[18].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[3][edge][data];
+                rubikscube_rotate->arrayCube[18].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[2][edge][data];
+                rubikscube_rotate->arrayCube[18].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[1][edge][data];
+                rubikscube_rotate->arrayCube[18].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[0][edge][data];
+                rubikscube_rotate->arrayCube[20].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[3][edge][data];
+                rubikscube_rotate->arrayCube[20].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[2][edge][data];
+                rubikscube_rotate->arrayCube[20].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[1][edge][data];
+                rubikscube_rotate->arrayCube[20].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[0][edge][data];
+                rubikscube_rotate->arrayCube[26].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[3][edge][data];
+                rubikscube_rotate->arrayCube[26].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[2][edge][data];
+                rubikscube_rotate->arrayCube[26].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[1][edge][data];
+                rubikscube_rotate->arrayCube[26].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[0][edge][data];
+                rubikscube_rotate->arrayCube[24].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[3][edge][data];
+                rubikscube_rotate->arrayCube[24].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[2][edge][data];
+                rubikscube_rotate->arrayCube[24].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[1][edge][data];
+                rubikscube_rotate->arrayCube[24].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[0][edge][data];
+                //upper face
+                rubikscube_rotate->arrayCube[18].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[5][edge][data];
+                rubikscube_rotate->arrayCube[19].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[23].vertexcubebase[5][edge][data];
+                rubikscube_rotate->arrayCube[20].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[5][edge][data];
+                rubikscube_rotate->arrayCube[21].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[19].vertexcubebase[5][edge][data];
+                rubikscube_rotate->arrayCube[23].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[25].vertexcubebase[5][edge][data];
+                rubikscube_rotate->arrayCube[24].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[5][edge][data];
+                rubikscube_rotate->arrayCube[25].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[21].vertexcubebase[5][edge][data];
+                rubikscube_rotate->arrayCube[26].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[5][edge][data];
+                //edge
+                rubikscube_rotate->arrayCube[19].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[23].vertexcubebase[3][edge][data];
+                rubikscube_rotate->arrayCube[19].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[23].vertexcubebase[2][edge][data];
+                rubikscube_rotate->arrayCube[19].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[23].vertexcubebase[1][edge][data];
+                rubikscube_rotate->arrayCube[19].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[23].vertexcubebase[0][edge][data];
+                rubikscube_rotate->arrayCube[23].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[25].vertexcubebase[3][edge][data];
+                rubikscube_rotate->arrayCube[23].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[25].vertexcubebase[2][edge][data];
+                rubikscube_rotate->arrayCube[23].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[25].vertexcubebase[1][edge][data];
+                rubikscube_rotate->arrayCube[23].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[25].vertexcubebase[0][edge][data];
+                rubikscube_rotate->arrayCube[25].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[21].vertexcubebase[3][edge][data];
+                rubikscube_rotate->arrayCube[25].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[21].vertexcubebase[2][edge][data];
+                rubikscube_rotate->arrayCube[25].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[21].vertexcubebase[1][edge][data];
+                rubikscube_rotate->arrayCube[25].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[21].vertexcubebase[0][edge][data];
+                rubikscube_rotate->arrayCube[21].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[19].vertexcubebase[3][edge][data];
+                rubikscube_rotate->arrayCube[21].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[19].vertexcubebase[2][edge][data];
+                rubikscube_rotate->arrayCube[21].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[19].vertexcubebase[1][edge][data];
+                rubikscube_rotate->arrayCube[21].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[19].vertexcubebase[0][edge][data];
+                
+            }
+        }
+    }
+    save(rubikscube_rotate);
+}
+void cube_rotation::swapF(rubiksCube *rubikscube_rotate)
+{
+    for(int edge = 0; edge < 4; edge++)//6 7 8 9 15 16 17 24 25 26
+    {
+        for(int data = 6; data < 9; data++)
+        {
+            rubikscube_rotate->arrayCube[0].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[3][edge][data];//corner
+            rubikscube_rotate->arrayCube[0].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[0].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[0].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[24].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[24].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[24].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[24].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[18].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[18].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[18].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[18].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[4][edge][data];
+            
+            rubikscube_rotate->arrayCube[0].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[3].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[9].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[9].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[21].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[15].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[3].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[18].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[21].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[15].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[24].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[0][edge][data];
+            
+            rubikscube_rotate->arrayCube[3].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[9].vertexcubebase[3][edge][data];//edge
+            rubikscube_rotate->arrayCube[3].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[9].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[3].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[9].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[3].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[9].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[15].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[3].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[15].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[3].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[15].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[3].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[15].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[3].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[21].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[15].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[21].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[15].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[21].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[15].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[21].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[15].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[9].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[21].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[9].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[21].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[9].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[21].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[9].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[21].vertexcubebase[4][edge][data];
+        }
+    }
+    save(rubikscube_rotate);
+}
+void cube_rotation::swapR(rubiksCube *rubikscube_rotate)
+{
+    for(int edge = 0; edge < 4; edge++)//6 7 8 9 15 16 17 24 25 26
+    {
+        for(int data = 6; data < 9; data++)
+        {
+            //corner
+            rubikscube_rotate->arrayCube[8].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[8].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[8].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[8].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[24].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[24].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[24].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[24].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[26].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[26].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[26].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[26].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[4][edge][data];
+            
+            
+            //upper face
+            rubikscube_rotate->arrayCube[8].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[6].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[6].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[24].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[24].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[26].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[7].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[15].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[15].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[25].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[25].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[17].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[17].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[7].vertexcubebase[1][edge][data];
+            //edge
+            rubikscube_rotate->arrayCube[7].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[15].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[7].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[15].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[7].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[15].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[7].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[15].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[15].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[25].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[15].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[25].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[15].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[25].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[15].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[25].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[25].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[17].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[25].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[17].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[25].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[17].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[25].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[17].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[17].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[7].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[17].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[7].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[17].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[7].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[17].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[7].vertexcubebase[4][edge][data];
+        }
+    }
+    save(rubikscube_rotate);
+}
+void cube_rotation::swapB(rubiksCube *rubikscube_rotate)
+{
+    for(int edge = 0; edge < 4; edge++)//6 7 8 9 15 16 17 24 25 26
+    {
+        for(int data = 6; data < 9; data++)
+        {
+            rubikscube_rotate->arrayCube[2].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[1][edge][data];//corner
+            rubikscube_rotate->arrayCube[2].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[2].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[2].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[8].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[8].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[8].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[8].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[26].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[26].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[26].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[26].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[20].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[20].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[20].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[20].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[5][edge][data];
+            
+            rubikscube_rotate->arrayCube[2].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[8].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[5].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[17].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[8].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[26].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[11].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[5].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[17].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[23].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[20].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[23].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[11].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[26].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[2][edge][data];
+            
+            rubikscube_rotate->arrayCube[5].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[17].vertexcubebase[1][edge][data];//edge
+            rubikscube_rotate->arrayCube[5].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[17].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[5].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[17].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[5].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[17].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[17].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[23].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[17].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[23].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[17].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[23].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[17].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[23].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[23].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[11].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[23].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[11].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[23].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[11].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[23].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[11].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[11].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[5].vertexcubebase[1][edge][data];
+            rubikscube_rotate->arrayCube[11].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[5].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[11].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[5].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[11].vertexcube[1][edge][data] = rubikscube_rotate->arrayCube[5].vertexcubebase[5][edge][data];
+        }
+    }
+    save(rubikscube_rotate);
+    
+}
+void cube_rotation::swapL(rubiksCube *rubikscube_rotate)
+{
+    for(int edge = 0; edge < 4; edge++)//6 7 8 9 15 16 17 24 25 26
+    {
+        for(int data = 6; data < 9; data++)
+        {
+            //corner
+            rubikscube_rotate->arrayCube[0].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[0].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[0].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[0].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[2].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[2].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[2].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[2].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[20].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[20].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[20].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[20].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[18].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[18].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[18].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[18].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[0][edge][data];
+            //upper face
+            rubikscube_rotate->arrayCube[0].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[2].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[2].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[20].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[20].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[18].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[18].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[0].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[1].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[11].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[11].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[19].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[19].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[9].vertexcubebase[3][edge][data];
+            rubikscube_rotate->arrayCube[9].vertexcube[3][edge][data] = rubikscube_rotate->arrayCube[1].vertexcubebase[3][edge][data];
+            //edge
+            rubikscube_rotate->arrayCube[1].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[11].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[1].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[11].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[1].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[11].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[1].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[11].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[11].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[19].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[11].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[19].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[11].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[19].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[11].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[19].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[19].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[9].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[19].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[9].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[19].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[9].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[19].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[9].vertexcubebase[0][edge][data];
+            rubikscube_rotate->arrayCube[9].vertexcube[0][edge][data] = rubikscube_rotate->arrayCube[1].vertexcubebase[4][edge][data];
+            rubikscube_rotate->arrayCube[9].vertexcube[4][edge][data] = rubikscube_rotate->arrayCube[1].vertexcubebase[2][edge][data];
+            rubikscube_rotate->arrayCube[9].vertexcube[2][edge][data] = rubikscube_rotate->arrayCube[1].vertexcubebase[5][edge][data];
+            rubikscube_rotate->arrayCube[9].vertexcube[5][edge][data] = rubikscube_rotate->arrayCube[1].vertexcubebase[0][edge][data];
+        }
+    }
+    save(rubikscube_rotate);
+}
+
+void cube_rotation::save(rubiksCube *rubikscube_rotate)
+{
+    for(int cubes = 0; cubes < 27; cubes++)
+    {
+        for(int edge = 0; edge < 4; edge++)//6 7 8 9 15 16 17 24 25 26
+        {
+            for(int data = 6; data < 9; data++)
+            {
+                rubikscube_rotate->arrayCube[cubes].vertexcubebase[0][edge][data] = rubikscube_rotate->arrayCube[cubes].vertexcube[0][edge][data];
+                rubikscube_rotate->arrayCube[cubes].vertexcubebase[1][edge][data] = rubikscube_rotate->arrayCube[cubes].vertexcube[1][edge][data];
+                rubikscube_rotate->arrayCube[cubes].vertexcubebase[2][edge][data] = rubikscube_rotate->arrayCube[cubes].vertexcube[2][edge][data];
+                rubikscube_rotate->arrayCube[cubes].vertexcubebase[3][edge][data] = rubikscube_rotate->arrayCube[cubes].vertexcube[3][edge][data];
+                rubikscube_rotate->arrayCube[cubes].vertexcubebase[4][edge][data] = rubikscube_rotate->arrayCube[cubes].vertexcube[4][edge][data];
+                rubikscube_rotate->arrayCube[cubes].vertexcubebase[5][edge][data] = rubikscube_rotate->arrayCube[cubes].vertexcube[5][edge][data];
+                
             }
         }
     }
 }
-void rotation_cube::rotationcube(float Ox, float Oy, float Oz,cube cube_rotate)
-{
-    for (int face = 0; face < 6; face++)
-    {
-        for (int vertex = 0; vertex < 4; vertex++)
-        {
-            for (int coord = 0; coord < 3; coord++)
-            {
-                if (Ox ==0 && Oy == 0 && Oz !=0)
-                {
-                    if (coord == 0){cube_rotate.vertexcube[face][vertex][coord] = cube_rotate.vertexcubebase[face][vertex][0]*cos(Oz)-cube_rotate.vertexcubebase[face][vertex][1]*sin(Oz)+cube_rotate.vertexcube[face][vertex][0];}
-                    if (coord == 1){cube_rotate.vertexcube[face][vertex][coord] = +cube_rotate.vertexcubebase[face][vertex][0]*sin(Oz)+cube_rotate.vertexcubebase[face][vertex][1]*cos(Oz)+cube_rotate.vertexcube[face][vertex][2];}
-                }
-            }
-        }
-    }
-}
 
-void rotation_cube::rotateFaceColors(rubiksCube *cube, int face){
-    char tempColors[6][9];
-    for (int i=0; i<6; i++){
-        for (int j=0; j<9; j++){
-            tempColors[i][j]=cube->colors[i][j];
-        }
-    }
-    cube->colors[face][0]=tempColors[face][6];
-    cube->colors[face][1]=tempColors[face][7];
-    cube->colors[face][2]=tempColors[face][0];
-    cube->colors[face][3]=tempColors[face][1];
-    cube->colors[face][4]=tempColors[face][2];
-    cube->colors[face][5]=tempColors[face][3];
-    cube->colors[face][6]=tempColors[face][4];
-    cube->colors[face][7]=tempColors[face][5];
-}
 
-void rotation_cube::rotateGreenFace(rubiksCube *cube){
-    // Rotate green face clockwise
-    rotation_cube::rotateFaceColors(cube, 0);
-    // Rotate involved lines
-    char tempColors[6][9];
-    for (int i=0; i<6; i++){
-        for (int j=0; j<9; j++){
-            tempColors[i][j]=cube->colors[i][j];
-        }
-    }
-    cube->colors[1][6]=tempColors[2][4];
-    cube->colors[1][5]=tempColors[2][3];
-    cube->colors[1][4]=tempColors[2][2];
-    cube->colors[4][0]=tempColors[1][6];
-    cube->colors[4][7]=tempColors[1][5];
-    cube->colors[4][6]=tempColors[1][4];
-    cube->colors[3][2]=tempColors[4][0];
-    cube->colors[3][1]=tempColors[4][7];
-    cube->colors[3][0]=tempColors[4][6];
-    cube->colors[2][4]=tempColors[3][2];
-    cube->colors[2][3]=tempColors[3][1];
-    cube->colors[2][2]=tempColors[3][0];
-}
-
-void rotation_cube::rotateWhiteFace(rubiksCube *cube){
-    // Rotate white face clockwise
-    rotation_cube::rotateFaceColors(cube, 1);
-    // Rotate involved lines
-    char tempColors[6][9];
-    for (int i=0; i<6; i++){
-        for (int j=0; j<9; j++){
-            tempColors[i][j]=cube->colors[i][j];
-        }
-    }
-    cube->colors[0][2]=tempColors[4][2];
-    cube->colors[0][1]=tempColors[4][1];
-    cube->colors[0][0]=tempColors[4][0];
-    cube->colors[2][2]=tempColors[0][2];
-    cube->colors[2][1]=tempColors[0][1];
-    cube->colors[2][0]=tempColors[0][0];
-    cube->colors[5][0]=tempColors[2][0];
-    cube->colors[5][1]=tempColors[2][1];
-    cube->colors[5][2]=tempColors[2][2];
-    cube->colors[4][0]=tempColors[5][0];
-    cube->colors[4][1]=tempColors[5][1];
-    cube->colors[4][2]=tempColors[5][2];
-}
-
-void rotation_cube::rotateOrangeFace(rubiksCube *cube){
-    // Rotate orange face clockwise
-    rotation_cube::rotateFaceColors(cube, 2);
-    // Rotate involved lines
-    char tempColors[6][9];
-    for (int i=0; i<6; i++){
-        for (int j=0; j<9; j++){
-            tempColors[i][j]=cube->colors[i][j];
-        }
-    }
-    cube->colors[0][0]=tempColors[1][0];
-    cube->colors[0][7]=tempColors[1][7];
-    cube->colors[0][6]=tempColors[1][6];
-    cube->colors[3][0]=tempColors[0][0];
-    cube->colors[3][6]=tempColors[0][7];
-    cube->colors[3][7]=tempColors[0][6];
-    cube->colors[5][4]=tempColors[3][0];
-    cube->colors[5][3]=tempColors[3][6];
-    cube->colors[5][2]=tempColors[3][7];
-    cube->colors[1][0]=tempColors[5][4];
-    cube->colors[1][7]=tempColors[5][3];
-    cube->colors[1][6]=tempColors[5][2];
-}
-
-void rotation_cube::rotateYellowFace(rubiksCube *cube){
-    // Rotate yellow face clockwise
-    rotation_cube::rotateFaceColors(cube, 3);
-    // Rotate involved lines
-    char tempColors[6][9];
-    for (int i=0; i<6; i++){
-        for (int j=0; j<9; j++){
-            tempColors[i][j]=cube->colors[i][j];
-        }
-    }
-    cube->colors[0][6]=tempColors[2][6];
-    cube->colors[0][5]=tempColors[2][5];
-    cube->colors[0][4]=tempColors[2][4];
-    cube->colors[4][6]=tempColors[0][6];
-    cube->colors[4][5]=tempColors[0][5];
-    cube->colors[4][4]=tempColors[0][4];
-    cube->colors[5][6]=tempColors[4][6];
-    cube->colors[5][5]=tempColors[4][5];
-    cube->colors[5][4]=tempColors[4][4];
-    cube->colors[2][6]=tempColors[5][6];
-    cube->colors[2][5]=tempColors[5][5];
-    cube->colors[2][4]=tempColors[5][4];
-}
-
-void rotation_cube::rotateRedFace(rubiksCube *cube){
-    // Rotate red face clockwise
-    rotation_cube::rotateFaceColors(cube, 4);
-    // Rotate involved lines
-    char tempColors[6][9];
-    for (int i=0; i<6; i++){
-        for (int j=0; j<9; j++){
-            tempColors[i][j]=cube->colors[i][j];
-        }
-    }
-    cube->colors[0][4]=tempColors[3][4];
-    cube->colors[0][3]=tempColors[3][3];
-    cube->colors[0][2]=tempColors[3][2];
-    cube->colors[1][4]=tempColors[0][4];
-    cube->colors[1][3]=tempColors[0][3];
-    cube->colors[1][2]=tempColors[0][2];
-    cube->colors[5][0]=tempColors[1][4];
-    cube->colors[5][7]=tempColors[1][3];
-    cube->colors[5][6]=tempColors[1][2];
-    cube->colors[3][4]=tempColors[5][0];
-    cube->colors[3][3]=tempColors[5][7];
-    cube->colors[3][2]=tempColors[5][6];
-}
-
-void rotation_cube::rotateBlueFace(rubiksCube *cube){
-    // Rotate blue face clockwise
-    rotation_cube::rotateFaceColors(cube, 5);
-    // Rotate involved lines
-    char tempColors[6][9];
-    for (int i=0; i<6; i++){
-        for (int j=0; j<9; j++){
-            tempColors[i][j]=cube->colors[i][j];
-        }
-    }
-    cube->colors[1][2]=tempColors[4][4];
-    cube->colors[1][1]=tempColors[4][3];
-    cube->colors[1][0]=tempColors[4][2];
-    cube->colors[2][0]=tempColors[1][2];
-    cube->colors[2][7]=tempColors[1][1];
-    cube->colors[2][6]=tempColors[1][0];
-    cube->colors[3][6]=tempColors[2][0];
-    cube->colors[3][5]=tempColors[2][7];
-    cube->colors[3][4]=tempColors[2][6];
-    cube->colors[4][4]=tempColors[3][6];
-    cube->colors[4][3]=tempColors[3][5];
-    cube->colors[4][2]=tempColors[3][4];
-}
-
-/*
- for (int face = 0; face < 6; face++)
- {
- for (int vertex = 0; vertex < 4; vertex++)
- {
- for (int coord = 0; coord < 3; coord++)
- {
- if (coord == 0){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][coord]+x;}
- if (coord == 1){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][coord]+y;}
- if (coord == 2){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][coord]+z;}
- if (Ox !=0 && Oy == 0 && Oz ==0)
- {
- if (coord == 0){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][0]*cos(Oz)-vertexcubebase[face][vertex][1]*sin(Oz)+x;}
- if (coord == 1){vertexcube[face][vertex][coord] = +vertexcubebase[face][vertex][0]*sin(Oz)+vertexcubebase[face][vertex][1]*cos(Oz)+z;}
- }
- if (Ox ==0 && Oy != 0 && Oz ==0)
- {
- std::cout << Oy << std::endl;
- if (coord == 0){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][0]*cos(Oy)-vertexcubebase[face][vertex][1]*sin(Oy)+x;}
- if (coord == 1){vertexcube[face][vertex][coord] = +vertexcubebase[face][vertex][0]*sin(Oy)+vertexcubebase[face][vertex][1]*cos(Oy)+z;}
- }
- if (Ox ==0 && Oy == 0 && Oz !=0)
- {
- if (coord == 0){vertexcube[face][vertex][coord] = vertexcubebase[face][vertex][0]*cos(Oz)-vertexcubebase[face][vertex][1]*sin(Oz)+x;}
- if (coord == 1){vertexcube[face][vertex][coord] = +vertexcubebase[face][vertex][0]*sin(Oz)+vertexcubebase[face][vertex][1]*cos(Oz)+z;}
- 
- }
- }
- }
- }
- */
-/*
- // This function takes the face's number parameter which you want to rotate clockwise
- void rotation_cube::rotateFaceColors(rubiksCube *cube, int face){
- char tempColors[6][9];
- for (int i=0; i<6; i++){
- for (int j=0; j<9; j++){
- tempColors[i][j]=cube->colors[i][j];
- }
- }
- cube->colors[face][0]=tempColors[face][6];
- cube->colors[face][1]=tempColors[face][7];
- cube->colors[face][2]=tempColors[face][0];
- cube->colors[face][3]=tempColors[face][1];
- cube->colors[face][4]=tempColors[face][2];
- cube->colors[face][5]=tempColors[face][3];
- cube->colors[face][6]=tempColors[face][4];
- cube->colors[face][7]=tempColors[face][5];
- }
- 
- void rotation_cube::rotateGreenFace(rubiksCube *cube){
- // Rotate green face clockwise
- rotation_cube::rotateFaceColors(cube, 0);
- // Rotate involved lines
- char tempColors[6][9];
- for (int i=0; i<6; i++){
- for (int j=0; j<9; j++){
- tempColors[i][j]=cube->colors[i][j];
- }
- }
- cube->colors[1][6]=tempColors[2][4];
- cube->colors[1][5]=tempColors[2][3];
- cube->colors[1][4]=tempColors[2][2];
- cube->colors[4][0]=tempColors[1][6];
- cube->colors[4][7]=tempColors[1][5];
- cube->colors[4][6]=tempColors[1][4];
- cube->colors[3][2]=tempColors[4][0];
- cube->colors[3][1]=tempColors[4][7];
- cube->colors[3][0]=tempColors[4][6];
- cube->colors[2][4]=tempColors[3][2];
- cube->colors[2][3]=tempColors[3][1];
- cube->colors[2][2]=tempColors[3][0];
- }
- 
- void rotation_cube::rotateWhiteFace(rubiksCube *cube){
- // Rotate white face clockwise
- rotation_cube::rotateFaceColors(cube, 1);
- // Rotate involved lines
- char tempColors[6][9];
- for (int i=0; i<6; i++){
- for (int j=0; j<9; j++){
- tempColors[i][j]=cube->colors[i][j];
- }
- }
- cube->colors[0][2]=tempColors[4][2];
- cube->colors[0][1]=tempColors[4][1];
- cube->colors[0][0]=tempColors[4][0];
- cube->colors[2][2]=tempColors[0][2];
- cube->colors[2][1]=tempColors[0][1];
- cube->colors[2][0]=tempColors[0][0];
- cube->colors[5][0]=tempColors[2][0];
- cube->colors[5][1]=tempColors[2][1];
- cube->colors[5][2]=tempColors[2][2];
- cube->colors[4][0]=tempColors[5][0];
- cube->colors[4][1]=tempColors[5][1];
- cube->colors[4][2]=tempColors[5][2];
- }
- 
- void rotation_cube::rotateOrangeFace(rubiksCube *cube){
- // Rotate orange face clockwise
- rotation_cube::rotateFaceColors(cube, 2);
- // Rotate involved lines
- char tempColors[6][9];
- for (int i=0; i<6; i++){
- for (int j=0; j<9; j++){
- tempColors[i][j]=cube->colors[i][j];
- }
- }
- cube->colors[0][0]=tempColors[1][0];
- cube->colors[0][7]=tempColors[1][7];
- cube->colors[0][6]=tempColors[1][6];
- cube->colors[3][0]=tempColors[0][0];
- cube->colors[3][6]=tempColors[0][7];
- cube->colors[3][7]=tempColors[0][6];
- cube->colors[5][4]=tempColors[3][0];
- cube->colors[5][3]=tempColors[3][6];
- cube->colors[5][2]=tempColors[3][7];
- cube->colors[1][0]=tempColors[5][4];
- cube->colors[1][7]=tempColors[5][3];
- cube->colors[1][6]=tempColors[5][2];
- }
- 
- void rotation_cube::rotateYellowFace(rubiksCube *cube){
- // Rotate yellow face clockwise
- rotation_cube::rotateFaceColors(cube, 3);
- // Rotate involved lines
- char tempColors[6][9];
- for (int i=0; i<6; i++){
- for (int j=0; j<9; j++){
- tempColors[i][j]=cube->colors[i][j];
- }
- }
- cube->colors[0][6]=tempColors[2][6];
- cube->colors[0][5]=tempColors[2][5];
- cube->colors[0][4]=tempColors[2][4];
- cube->colors[4][6]=tempColors[0][6];
- cube->colors[4][5]=tempColors[0][5];
- cube->colors[4][4]=tempColors[0][4];
- cube->colors[5][6]=tempColors[4][6];
- cube->colors[5][5]=tempColors[4][5];
- cube->colors[5][4]=tempColors[4][4];
- cube->colors[2][6]=tempColors[5][6];
- cube->colors[2][5]=tempColors[5][5];
- cube->colors[2][4]=tempColors[5][4];
- }
- 
- void rotation_cube::rotateRedFace(rubiksCube *cube){
- // Rotate red face clockwise
- rotation_cube::rotateFaceColors(cube, 4);
- // Rotate involved lines
- char tempColors[6][9];
- for (int i=0; i<6; i++){
- for (int j=0; j<9; j++){
- tempColors[i][j]=cube->colors[i][j];
- }
- }
- cube->colors[0][4]=tempColors[3][4];
- cube->colors[0][3]=tempColors[3][3];
- cube->colors[0][2]=tempColors[3][2];
- cube->colors[1][4]=tempColors[0][4];
- cube->colors[1][3]=tempColors[0][3];
- cube->colors[1][2]=tempColors[0][2];
- cube->colors[5][0]=tempColors[1][4];
- cube->colors[5][7]=tempColors[1][3];
- cube->colors[5][6]=tempColors[1][2];
- cube->colors[3][4]=tempColors[5][0];
- cube->colors[3][3]=tempColors[5][7];
- cube->colors[3][2]=tempColors[5][6];
- }
- 
- void rotation_cube::rotateBlueFace(rubiksCube *cube){
- // Rotate blue face clockwise
- rotation_cube::rotateFaceColors(cube, 5);
- // Rotate involved lines
- char tempColors[6][9];
- for (int i=0; i<6; i++){
- for (int j=0; j<9; j++){
- tempColors[i][j]=cube->colors[i][j];
- }
- }
- cube->colors[1][2]=tempColors[4][4];
- cube->colors[1][1]=tempColors[4][3];
- cube->colors[1][0]=tempColors[4][2];
- cube->colors[2][0]=tempColors[1][2];
- cube->colors[2][7]=tempColors[1][1];
- cube->colors[2][6]=tempColors[1][0];
- cube->colors[3][6]=tempColors[2][0];
- cube->colors[3][5]=tempColors[2][7];
- cube->colors[3][4]=tempColors[2][6];
- cube->colors[4][4]=tempColors[3][6];
- cube->colors[4][3]=tempColors[3][5];
- cube->colors[4][2]=tempColors[3][4];
- }
- */
