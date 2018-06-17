@@ -19,6 +19,8 @@
 //#include "graphic_function/headers/cube_rotation.hpp"
 #include <iostream>
 #include <string>
+#include <chrono>
+#include <thread>
 
 // Defines
 #define PI 3.14159265
@@ -98,30 +100,39 @@ int main()
                     if(ev.key.keysym.sym == SDLK_DOWN){direction = 4;}
                     if(ev.key.keysym.sym == SDLK_u){
                         myCube->movesDone.insert(0,"U");
-                        myCube->doAskedMove("u", myCube);
+                        myCube->doAskedMove('u', myCube);
                     }
                     if(ev.key.keysym.sym == SDLK_d){
                         myCube->movesDone.insert(0,"D");
-                        myCube->doAskedMove("d", myCube);
+                        myCube->doAskedMove('d', myCube);
                     }
                     if(ev.key.keysym.sym == SDLK_r){
                         myCube->movesDone.insert(0,"R");
-                        myCube->doAskedMove("r", myCube);
+                        myCube->doAskedMove('r', myCube);
                     }
                     if(ev.key.keysym.sym == SDLK_l){
                         myCube->movesDone.insert(0,"L");
-                        myCube->doAskedMove("l", myCube);
+                        myCube->doAskedMove('l', myCube);
                     }
                     if(ev.key.keysym.sym == SDLK_f){
                         myCube->movesDone.insert(0,"F");
-                        myCube->doAskedMove("f", myCube);
+                        myCube->doAskedMove('f', myCube);
                     }
                     if(ev.key.keysym.sym == SDLK_b){
                         myCube->movesDone.insert(0,"B");
-                        myCube->doAskedMove("b", myCube);
+                        myCube->doAskedMove('b', myCube);
                     }
                     if(ev.key.keysym.sym == SDLK_a){
-                        myCube->doAskedMove(myCube->movesDone, myCube);
+                      for (int i = 0; i < myCube->movesDone.length(); i++) {
+                        myCube->doAskedMove(myCube->movesDone[i], myCube);
+                        if (myCube->isItFinished(myCube) == true){
+                            myCube->movesDone.clear();
+                            break;
+                        }
+                        render actual_render;
+                        actual_render.Rendering(cam, myCube->arrayCube);
+                        std::this_thread::sleep_for(std::chrono::milliseconds(250));
+                      }
                     }
             }
         }

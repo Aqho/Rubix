@@ -39,7 +39,7 @@ public:
     std::string movesDone;
     void initCube();
     void displayFlatCube(rubiksCube *cube);
-    void doAskedMove(std::string moves, rubiksCube *cube);
+    void doAskedMove(char moves, rubiksCube *cube);
     bool isItFinished(rubiksCube *cube);
     void rotateFaceColors(rubiksCube *cube, int face);
     void rotateGreenFace(rubiksCube *cube);

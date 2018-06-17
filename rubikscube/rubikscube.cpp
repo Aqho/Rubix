@@ -1,8 +1,6 @@
 #include <iostream>
 #include <string>
 #include "headers/rubikscube.hpp"
-#include <chrono>
-#include <thread>
 #include "../graphic_function/headers/cube_rotation.hpp"
 
 void rubiksCube::initCube(){
@@ -38,82 +36,73 @@ void rubiksCube::displayFlatCube(rubiksCube *cube){
     printf("              -----------\n");
 }
 
-void rubiksCube::doAskedMove(std::string moves, rubiksCube *cube){
+void rubiksCube::doAskedMove(char move, rubiksCube *cube){
     cube_rotation rotation;
-    for (int i = 0; i < moves.length(); i++) {
-        printf("\nDisplaying flat Rubik's Cube\n");
-        printf("Actual move : %c\n",moves[i]);
-        // All moves dones with green face as front face and white face as the upper face
-        if (moves[i] == 'u'){ // Rotate up face clockwise
-            rubiksCube::rotateWhiteFace(cube);
-            rotation.rotationU(cube);
-        } else if (moves[i] == 'f'){ // Rotate front face clockwise
-            rubiksCube::rotateGreenFace(cube);
-            rotation.rotationF(cube);
-        } else if (moves[i] == 'l'){ // Rotate left face clockwise
-            rubiksCube::rotateOrangeFace(cube);
-            rotation.rotationL(cube);
-        } else if (moves[i] == 'r'){ // Rotate right face clockwise
-            rubiksCube::rotateRedFace(cube);
-            rotation.rotationR(cube);
-        } else if (moves[i] == 'b'){ // Rotate back face clockwise
-            rubiksCube::rotateBlueFace(cube);
-            rotation.rotationB(cube);
-        } else if (moves[i] == 'd'){ // Rotate down face clockwise
-            rubiksCube::rotateYellowFace(cube);
-            rotation.rotationD(cube);
-        } else if (moves[i] == 'U'){ // Rotate down face counter-clockwise
-            rubiksCube::rotateWhiteFace(cube);
-            rubiksCube::rotateWhiteFace(cube);
-            rubiksCube::rotateWhiteFace(cube);
-            rotation.rotationU(cube);
-            rotation.rotationU(cube);
-            rotation.rotationU(cube);
-        }  else if (moves[i] == 'F'){ // Rotate front face counter-clockwise
-            rubiksCube::rotateGreenFace(cube);
-            rubiksCube::rotateGreenFace(cube);
-            rubiksCube::rotateGreenFace(cube);
-            rotation.rotationF(cube);
-            rotation.rotationF(cube);
-            rotation.rotationF(cube);
-        } else if (moves[i] == 'L'){ // Rotate left face counter-clockwise
-            rubiksCube::rotateOrangeFace(cube);
-            rubiksCube::rotateOrangeFace(cube);
-            rubiksCube::rotateOrangeFace(cube);
-            rotation.rotationL(cube);
-            rotation.rotationL(cube);
-            rotation.rotationL(cube);
-        } else if (moves[i] == 'R'){ // Rotate right face counter-clockwise
-            rubiksCube::rotateRedFace(cube);
-            rubiksCube::rotateRedFace(cube);
-            rubiksCube::rotateRedFace(cube);
-            rotation.rotationR(cube);
-            rotation.rotationR(cube);
-            rotation.rotationR(cube);
-        } else if (moves[i] == 'B'){ // Rotate back face counter-clockwise
-            rubiksCube::rotateBlueFace(cube);
-            rubiksCube::rotateBlueFace(cube);
-            rubiksCube::rotateBlueFace(cube);
-            rotation.rotationB(cube);
-            rotation.rotationB(cube);
-            rotation.rotationB(cube);
-        } else if (moves[i] == 'D'){ // Rotate down face counter-clockwise
-            rubiksCube::rotateYellowFace(cube);
-            rubiksCube::rotateYellowFace(cube);
-            rubiksCube::rotateYellowFace(cube);
-            rotation.rotationD(cube);
-            rotation.rotationD(cube);
-            rotation.rotationD(cube);
-        }
-        rubiksCube::displayFlatCube(cube);
-        if (rubiksCube::isItFinished(cube)){
-            cube->movesDone.clear();
-            break;
-        }
-        if (i > 1){
-            std::this_thread::sleep_for(std::chrono::milliseconds(250));
-        }
+    printf("\nDisplaying flat Rubik's Cube\n");
+    printf("Actual move : %c\n",move);
+    // All moves dones with green face as front face and white face as the upper face
+    if (move == 'u'){ // Rotate up face clockwise
+      rubiksCube::rotateWhiteFace(cube);
+      rotation.rotationU(cube);
+    } else if (move == 'f'){ // Rotate front face clockwise
+      rotation.rotationF(cube);
+      rubiksCube::rotateGreenFace(cube);
+    } else if (move == 'l'){ // Rotate left face clockwise
+      rubiksCube::rotateOrangeFace(cube);
+      rotation.rotationL(cube);
+    } else if (move == 'r'){ // Rotate right face clockwise
+      rubiksCube::rotateRedFace(cube);
+      rotation.rotationR(cube);
+    } else if (move == 'b'){ // Rotate back face clockwise
+      rubiksCube::rotateBlueFace(cube);
+      rotation.rotationB(cube);
+    } else if (move == 'd'){ // Rotate down face clockwise
+      rubiksCube::rotateYellowFace(cube);
+      rotation.rotationD(cube);
+    } else if (move == 'U'){ // Rotate down face counter-clockwise
+      rubiksCube::rotateWhiteFace(cube);
+      rotation.rotationU(cube);
+      rubiksCube::rotateWhiteFace(cube);
+      rotation.rotationU(cube);
+      rubiksCube::rotateWhiteFace(cube);
+      rotation.rotationU(cube);
+    }  else if (move == 'F'){ // Rotate front face counter-clockwise
+      rotation.rotationF(cube);
+      rubiksCube::rotateGreenFace(cube);
+      rotation.rotationF(cube);
+      rubiksCube::rotateGreenFace(cube);
+      rotation.rotationF(cube);
+      rubiksCube::rotateGreenFace(cube);
+    } else if (move == 'L'){ // Rotate left face counter-clockwise
+      rubiksCube::rotateOrangeFace(cube);
+      rotation.rotationL(cube);
+      rubiksCube::rotateOrangeFace(cube);
+      rotation.rotationL(cube);
+      rubiksCube::rotateOrangeFace(cube);
+      rotation.rotationL(cube);
+    } else if (move == 'R'){ // Rotate right face counter-clockwise
+      rubiksCube::rotateRedFace(cube);
+      rotation.rotationR(cube);
+      rubiksCube::rotateRedFace(cube);
+      rotation.rotationR(cube);
+      rubiksCube::rotateRedFace(cube);
+      rotation.rotationR(cube);
+    } else if (move == 'B'){ // Rotate back face counter-clockwise
+      rubiksCube::rotateBlueFace(cube);
+      rotation.rotationB(cube);
+      rubiksCube::rotateBlueFace(cube);
+      rotation.rotationB(cube);
+      rubiksCube::rotateBlueFace(cube);
+      rotation.rotationB(cube);
+    } else if (move == 'D'){ // Rotate down face counter-clockwise
+      rubiksCube::rotateYellowFace(cube);
+      rotation.rotationD(cube);
+      rubiksCube::rotateYellowFace(cube);
+      rotation.rotationD(cube);
+      rubiksCube::rotateYellowFace(cube);
+      rotation.rotationD(cube);
     }
+    rubiksCube::displayFlatCube(cube);
 }
 
 bool rubiksCube::isItFinished(rubiksCube *cube){
