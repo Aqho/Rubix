@@ -38,7 +38,7 @@ void rubiksCube::displayFlatCube(rubiksCube *cube){
     printf("              -----------\n");
 }
 
-void rubiksCube::doAskedMove(std::string moves, rubiksCube *cube){
+void rubiksCube::doAskedMove(std::string moves, rubiksCube *cube, float *cam){
     for (int i = 0; i < moves.length(); i++) {
       printf("\nDisplaying flat Rubik's Cube\n");
       printf("Actual move : %c\n",moves[i]);
