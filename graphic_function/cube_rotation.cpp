@@ -6,27 +6,27 @@
 #include <iostream>
 #define PI 3.14159265
 
-void cube_rotation::rotationU(rubiksCube *rubikscube_rotate, float *cam)
+void cube_rotation::rotationU(rubiksCube *rubikscube_rotate)
 {
     /*for (float angle = 0.0; angle < 90; angle=angle+0.2000)
-    {
-        for (int i = 0; i < 1; i++){
-            for (int face = 0; face < 6; face++)
-            {
-                for (int vertex = 0; vertex < 4; vertex++)
-                {
-                    for (int coord = 0; coord < 3; coord++)
-                    {
-                        //if (coord == 0){rubikscube_rotate->arrayCube[i].vertexcube[face][vertex][coord] = rubikscube_rotate->arrayCube[i].vertexcubebase[face][vertex][0]*cos(angle/180*PI)-rubikscube_rotate->arrayCube[i].vertexcubebase[face][vertex][1]*sin(angle/180*PI)+rubikscube_rotate->arrayCube[i].vertexcube[face][vertex][0];}
-                        //if (coord == 1){rubikscube_rotate->arrayCube[i].vertexcube[face][vertex][coord] = +rubikscube_rotate->arrayCube[i].vertexcubebase[face][vertex][0]*sin(angle/180*PI)+rubikscube_rotate->arrayCube[i].vertexcubebase[face][vertex][1]*cos(angle/180*PI)+rubikscube_rotate->arrayCube[i].vertexcube[face][vertex][2];}
+     {
+     for (int i = 0; i < 1; i++){
+     for (int face = 0; face < 6; face++)
+     {
+     for (int vertex = 0; vertex < 4; vertex++)
+     {
+     for (int coord = 0; coord < 3; coord++)
+     {
+     //if (coord == 0){rubikscube_rotate->arrayCube[i].vertexcube[face][vertex][coord] = rubikscube_rotate->arrayCube[i].vertexcubebase[face][vertex][0]*cos(angle/180*PI)-rubikscube_rotate->arrayCube[i].vertexcubebase[face][vertex][1]*sin(angle/180*PI)+rubikscube_rotate->arrayCube[i].vertexcube[face][vertex][0];}
+     //if (coord == 1){rubikscube_rotate->arrayCube[i].vertexcube[face][vertex][coord] = +rubikscube_rotate->arrayCube[i].vertexcubebase[face][vertex][0]*sin(angle/180*PI)+rubikscube_rotate->arrayCube[i].vertexcubebase[face][vertex][1]*cos(angle/180*PI)+rubikscube_rotate->arrayCube[i].vertexcube[face][vertex][2];}
 
-                    }
-                }
-            }
-        }
-        render actual_render;
-        actual_render.Rendering(cam, rubikscube_rotate->arrayCube);
-    }*/
+     }
+     }
+     }
+     }
+     render actual_render;
+     actual_render.Rendering(cam, rubikscube_rotate->arrayCube);
+     }*/
     swapU(rubikscube_rotate);
 }
 void cube_rotation::rotationD(rubiksCube *rubikscube_rotate)
