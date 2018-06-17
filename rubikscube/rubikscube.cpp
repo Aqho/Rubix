@@ -3,7 +3,7 @@
 #include "headers/rubikscube.hpp"
 #include <chrono>
 #include <thread>
-
+#include "../graphic_function/headers/cube_rotation.hpp"
 
 void rubiksCube::initCube(){
     for (int i = 0; i < 27; i++) {

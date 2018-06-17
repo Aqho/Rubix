@@ -75,16 +75,14 @@ int main()
         fprintf(stderr, "ERROR:%s\n", SDL_GetError());
         //goto cleanup;
     }
-    float angle = 0.0;
     bool quit = false;
     window_initializer();
 
     //test array cube
-    float rot = 0.0;
     int direction = 0;
     float camera[6]{0,0,0,0,0,0};
+    float *cam = camera;
     //petitscubes[1].receive_coordonate(0, 1, 1, 0, 0, 0);
-
     while (quit != true) {
         SDL_Event ev;
         /* process events until timeout occurs */
@@ -131,25 +129,10 @@ int main()
         {
 
         }
-        float *cam = camera;
         camera_position my_cam;
         my_cam.camera_rotation(direction, cam);
         direction = 0;
         render actual_render;
         actual_render.Rendering(cam, myCube->arrayCube);
-        //angle = angle + 0.02;
-        rot = rot + 1;
-        for(int i = 0; i < 9; i++)
-        {
-            myCube->tabCubes[i].receive_coordonate(myCube->tabCubes[i].coordonate[0], myCube->tabCubes[i].coordonate[1], myCube->tabCubes[i].coordonate[2], 0, 0, 45.0 * PI / 180);
-        }
-        if (rot > 359.95)
-        {
-            rot = 0.0;
-        }
-        if (angle > 359.95)
-        {
-            angle = 0.0;
-        }
     }
 }
