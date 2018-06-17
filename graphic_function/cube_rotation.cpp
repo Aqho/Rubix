@@ -1,4 +1,4 @@
-#include "cube_rotation.hpp"
+#include "headers/cube_rotation.hpp"
 #include "../rubikscube/headers/cube.hpp"
 #include "../rubikscube/headers/rubikscube.hpp"
 #include "../render/headers/render.hpp"
@@ -394,5 +394,3 @@ void cube_rotation::save(rubiksCube *rubikscube_rotate)
         }
     }
 }
-
-

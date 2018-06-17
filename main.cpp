@@ -52,19 +52,19 @@ int main()
     myCube->initCube();
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         return EXIT_FAILURE;
-    
+
 #if 0
     /* configure the OpenGL version to use. */
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,SDL_GL_CONTEXT_PROFILE_CORE);
 #endif
-    
+
     /* create a window suitable for OpenGL. */
     SDL_Window *mainwin = SDL_CreateWindow("Cube",
                                            SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                            800, 400, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-    
+
     if (!mainwin) {
         fprintf(stderr, "ERROR:%s\n", SDL_GetError());
         SDL_Quit();
@@ -77,13 +77,12 @@ int main()
     }
     bool quit = false;
     window_initializer();
-    
+
     //test array cube
     int direction = 0;
     float camera[6]{0,0,0,0,0,0};
     float *cam = camera;
     //petitscubes[1].receive_coordonate(0, 1, 1, 0, 0, 0);
-    
     while (quit != true) {
         SDL_Event ev;
         /* process events until timeout occurs */
@@ -97,23 +96,43 @@ int main()
                     if(ev.key.keysym.sym == SDLK_LEFT){direction = 2;}
                     if(ev.key.keysym.sym == SDLK_UP){direction = 3;}
                     if(ev.key.keysym.sym == SDLK_DOWN){direction = 4;}
-                    if(ev.key.keysym.sym == SDLK_u){ myCube->doAskedMove("U", myCube, cam);}
-                    if(ev.key.keysym.sym == SDLK_d){ myCube->doAskedMove("D", myCube, cam);}
-                    if(ev.key.keysym.sym == SDLK_r){ myCube->doAskedMove("R", myCube, cam);}
-                    if(ev.key.keysym.sym == SDLK_l){ myCube->doAskedMove("L", myCube, cam);}
-                    if(ev.key.keysym.sym == SDLK_f){ myCube->doAskedMove("F", myCube, cam);}
-                    if(ev.key.keysym.sym == SDLK_b){ myCube->doAskedMove("B", myCube, cam);}
+                    if(ev.key.keysym.sym == SDLK_u){
+                      myCube->movesDone.insert(0,"U");
+                      myCube->doAskedMove("u", myCube);
+                    }
+                    if(ev.key.keysym.sym == SDLK_d){
+                      myCube->movesDone.insert(0,"D");
+                      myCube->doAskedMove("d", myCube);
+                    }
+                    if(ev.key.keysym.sym == SDLK_r){
+                      myCube->movesDone.insert(0,"R");
+                      myCube->doAskedMove("r", myCube);
+                    }
+                    if(ev.key.keysym.sym == SDLK_l){
+                      myCube->movesDone.insert(0,"L");
+                      myCube->doAskedMove("l", myCube);
+                    }
+                    if(ev.key.keysym.sym == SDLK_f){
+                      myCube->movesDone.insert(0,"F");
+                      myCube->doAskedMove("f", myCube);
+                    }
+                    if(ev.key.keysym.sym == SDLK_b){
+                      myCube->movesDone.insert(0,"B");
+                      myCube->doAskedMove("b", myCube);
+                    }
+                    if(ev.key.keysym.sym == SDLK_a){
+                      myCube->doAskedMove(myCube->movesDone, myCube);
+                    }
             }
         }
         if ( SDL_PollEvent(&ev) == 1 )
         {
-            
+
         }
         camera_position my_cam;
         my_cam.camera_rotation(direction, cam);
         direction = 0;
         render actual_render;
         actual_render.Rendering(cam, myCube->arrayCube);
-        //angle = angle + 0.02;
     }
 }
